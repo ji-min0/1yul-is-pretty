@@ -3,7 +3,7 @@ import sys, time, threading
 
 class  GameLogic: 
 
-    def __init__(self):        
+    def __init__(self): 
         self.quiz_list = [] # 출제할 문제리스트 저장
         self.keys = ['level', 'questions', 'choices', 'answer', "explanation"]
         self.level = ("1", "2", "3")
@@ -26,7 +26,7 @@ class  GameLogic:
         "\n\t3. 조건문과 반복문" \
         "\n\t4. 함수와 예외처리")
         criteria = ("레벨별", "단원별", "전체")
-        criteria_select = input("🕹️문제 유형을 선택해주세요!(전체, 레벨별, 단원별)").strip()
+        criteria_select = input("\n🕹️문제 유형을 선택해주세요!(전체, 레벨별, 단원별)").strip()
         # =======================================================================
         
         self.criteria_select = GameLogic.exact_value(criteria_select, criteria, "'전체', '레벨별', '단원별'")    # 입력값 검증.
