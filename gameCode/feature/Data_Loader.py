@@ -10,7 +10,7 @@ class GameDataLoading:
 # 4개 파일 경로를 사용함 
     def __init__(self, file_paths=None): 
         # 받은 파일 경로가 없으면 기본 네 개의 경로 사용
-        self.file_paths = file_paths if file_paths else ['feature/questionfile1.csv', 'feature/questionfile2.csv', 'feature/questionfile3.csv', 'feature/questionfile4.csv']
+        self.file_paths = file_paths if file_paths else ['gamecode/feature/questionfile1.csv', 'gamecode/feature/questionfile2.csv', 'gamecode/feature/questionfile3.csv', 'gamecode/feature/questionfile4.csv']
         # 파일을 받아둘 빈 딕셔너리 
         self.data_files = {}
         # 인스턴스가 생성될 때 실행해서 모든 파일을 미리 읽어두는 기능
