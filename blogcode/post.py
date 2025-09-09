@@ -5,8 +5,10 @@ from datetime import datetime
 class Post:
     def __init__(self, author_id: str = "Unknown"):
         self.author_id = author_id # 작성자 ID 추가
-        self.post_name = input("글의 제목을 입력 해주세요: ")
-        self.post_text = input("글의 내용을 입력 해주세요: ")
+        self.post_name = input("글의 제목을 입력 해주세요: ") #!<<<<==========================================제목 작성 <<여기에 filteringcode.filter.filter_profanity를 들고 와야함...
+
+        self.post_text = input("글의 내용을 입력 해주세요: ") #!<<<<==========================================내용 작성
+
         self.category = self.select_category()  # 카테고리 선택
         self.post: List[Dict[str, str]] = [] 
         self.post_time = datetime.now().strftime("%Y.%m.%d %H:%M:%S") # 정보 저장소

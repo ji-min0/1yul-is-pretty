@@ -53,8 +53,9 @@ class Comment:
         
         print(f"\n--- {post_num}번 게시물에 댓글 작성 ---")
         print(f"작성자: {self.author_id}")
-        comment_text = input("댓글 내용을 입력하세요: ")
-        
+
+        comment_text = input("댓글 내용을 입력하세요: ") #!<<<<==========================================댓글 작성
+
         current_time = datetime.now().strftime("%Y.%m.%d %H:%M:%S")
         
         post_file = os.path.join(self.post_dir, f"{post_num}.txt")

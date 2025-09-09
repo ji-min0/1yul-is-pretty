@@ -1,6 +1,9 @@
-from filteringcode.filter import filter_profanity
-from filteringcode.stats import log_event, give_praise
+from filter import filter_profanity
+from stats import log_event, give_praise
 import os, sys
+import os
+import json
+
 
 def main():
     print("\n=== 귀여운 욕 필터기 ===")
@@ -10,7 +13,7 @@ def main():
     while True:
         # 사용자 입력 처리
         text = input("문장을 입력하세요 (종료하려면 '종료' 입력): ")
-        
+
         # 종료조건
         if text.strip() == "" or text.lower() == "종료":
             print("\n프로그램을 종료합니다...\n")
@@ -20,7 +23,8 @@ def main():
         # 욕설 필터링/변환
         filtered_text = filter_profanity(text)
 
-        # 결과 출력
+        # 결과 출력 <<======json파일이랑 일치할시 변환되는거 맞죠?
+        
         print(f"\n[원본] {text}")
         print(f"[변환] {filtered_text}\n")
         textcount += 1
