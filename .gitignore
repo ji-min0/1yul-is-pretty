@@ -1,0 +1,7 @@
+pycache/
+*.pyc
+logs.txt
+.env
+.DS_Store
+Pipfile
+Pipfile.lock
