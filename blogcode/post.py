@@ -48,7 +48,7 @@ class Post:
         print(separator)
 
     def save_to_file(self): 
-        post_dir = 'member2/test_posts' 
+        post_dir = 'blogcode/posts' 
 
         existing_files = [f for f in os.listdir(post_dir) if f.endswith('.txt')]
         next_num = 1

@@ -4,7 +4,7 @@ from datetime import datetime
 
 class Comment:
     def __init__(self, author_id="Unknown"):
-        self.post_dir = 'member2/test_posts'
+        self.post_dir = 'blogcode/posts'
         self.author_id = author_id
         os.makedirs(self.post_dir, exist_ok=True)
         self.existing_files = [f for f in os.listdir(self.post_dir) if f.endswith('.txt') and f.split('.')[0].isdigit()]
