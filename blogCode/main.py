@@ -1,17 +1,19 @@
-from blogCode import submain
-from blogCode.post import Post
-from blogCode.BoradManager import BoardManager, main as board_main
-from blogCode.comment import Comment
-from gameCode.game_main import game_main
+from blogcode import submain
+from blogcode.post import Post
+from blogcode.BoradManager import BoardManager, main as board_main
+from blogcode.comment import Comment
+from gamecode.game_main import game_main
 
 def main():
+    # 메인 메뉴 진입 전 LogIn/SignUp 먼저 진행
+    current_user = login_or_signup()
+
     while True:
         print("\n===== 메인 메뉴 =====")
         print("1. 게시글 작성")
         print("2. 게시글 목록 보기")
-        print("3. 단어 맞추기 게임")
-        print("4. 댓글 작성")
-        print("5. 회원 관리 (로그인/회원가입)")
+        print("3. 댓글 작성")
+        print("4. 파이썬 게임")
         print("0. 종료")
 
         command = input("👉 메뉴 선택: ").strip()
@@ -20,43 +22,20 @@ def main():
             print("프로그램을 종료합니다.")
             break
         elif command == "1":
-            # 현재 로그인한 사용자 정보 가져오기
-            current_user = getattr(submain, 'current_user', None)
-            if current_user:
                 Post(current_user)
-            else:
-                print("⚠️ 게시글을 작성하려면 먼저 로그인해주세요.")
-                print("회원 관리 메뉴에서 로그인 후 다시 시도해주세요.")
         elif command == "2":
             board_main()
-
-        elif command == "3":
-            current_user = getattr(submain, 'current_user', None)
-            if current_user:
-                main()
-                continue
-            else:
-                print("⚠️ 댓글을 작성하려면 먼저 로그인해주세요.")
-                print("회원 관리 메뉴에서 로그인 후 다시 시도해주세요.")
-
-
+        elif command == "3": 
+            comment = Comment(current_user)
+            comment.execute()
         elif command == "4":
-            # 댓글 작성 기능
-            current_user = getattr(submain, 'current_user', None)
-            if current_user:
-                comment = Comment(current_user)
-                comment.execute()
-            else:
-                print("⚠️ 댓글을 작성하려면 먼저 로그인해주세요.")
-                print("회원 관리 메뉴에서 로그인 후 다시 시도해주세요.")
-
-        elif command == "5":
-            manage_user()
+                game_main()
         else:
-            print("⚠ 잘못된 명령어입니다.")
+            print("⚠️ 잘못된 명령어입니다.")
 
-def manage_user():
-    while True:
+# LogIn/SignUp 처리, 성공 시 현재 사용자 반환
+def login_or_signup(): 
+    while True: 
         print("\n--- 회원 관리 ---")
         print("1. 회원가입")
         print("2. 로그인")
@@ -69,6 +48,7 @@ def manage_user():
             username = input("아이디 입력: ")
             password = input("비밀번호 입력: ")
             submain.register_user(username, password)
+            submain.save_data()
         elif choice == "2":
             username = input("아이디 입력: ")
             password = input("비밀번호 입력: ")
