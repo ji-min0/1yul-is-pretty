@@ -1,7 +1,7 @@
-from mamber1 import main as member3
-from member3.post import Post
-from member2.BoradManager import BoardManager, main as board_main
-from member3.comment import Comment
+from blogcode import submain
+from blogcode.post import Post
+from blogcode.BoradManager import BoardManager, main as board_main
+from blogcode.comment import Comment
 def main(): 
     while True:
         print("\n===== 메인 메뉴 =====")
@@ -18,7 +18,7 @@ def main():
             break
         elif command == "1":
             # 현재 로그인한 사용자 정보 가져오기
-            current_user = getattr(member3, 'current_user', None)
+            current_user = getattr(submain, 'current_user', None)
             if current_user:
                 Post(current_user)
             else:
@@ -28,7 +28,7 @@ def main():
             board_main()
         elif command == "3":
             # 댓글 작성 기능
-            current_user = getattr(member3, 'current_user', None)
+            current_user = getattr(submain, 'current_user', None)
             if current_user:
                 comment = Comment(current_user)
                 comment.execute()
@@ -53,19 +53,19 @@ def manage_user():
         if choice == "1":
             username = input("아이디 입력: ")
             password = input("비밀번호 입력: ")
-            member3.register_user(username, password)
+            submain.register_user(username, password)
         elif choice == "2":
             username = input("아이디 입력: ")
             password = input("비밀번호 입력: ")
-            member3.login_user(username, password)
+            submain.login_user(username, password)
         elif choice == "3":
-            member3.logout_user()
+            submain.logout_user()
         elif choice == "0":
             break
         else:
             print("⚠ 잘못된 선택입니다.")
 
 if __name__ == "__main__":
-    member3.load_data()
+    submain.load_data()
     main()
-    member3.save_data()
+    submain.save_data()

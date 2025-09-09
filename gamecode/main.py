@@ -1,6 +1,6 @@
-from feature.Data_Loader import GameDataLoading
-from game_logic import GameLogic
-from ui_manager import Student
+from gamecode.feature.Data_Loader import GameDataLoading
+from gamecode.game_logic import GameLogic
+from gamecode.ui_manager import Student
 
 # def main():
 

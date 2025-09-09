@@ -5,7 +5,10 @@
 import os
 import datetime
 
-folder_path = 'member2/test_posts' # 포스팅한 글을 모아둔 기본 폴더주소
+folder_path = 'blogcode/posts' # 포스팅한 글을 모아둔 기본 폴더주소
+# 폴더가 없으면 생성
+if not os.path.exists(folder_path):
+    os.makedirs(folder_path)
 
 class BoardManager:
 
