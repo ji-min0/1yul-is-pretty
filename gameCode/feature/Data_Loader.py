@@ -34,7 +34,7 @@ class GameDataLoading:
                 print(f"파일을 찾을 수 없습니다: {file}")
             except Exception as e:
                 print(f"파일 로드 중 오류 발생: {file} - {str(e)}")
-   
+                
     def get_data(self, file_name):
         # 데이터 딕셔너리에 없으면 새로 읽기 시도 
         if file_name not in self.data_files:

@@ -1,7 +1,7 @@
-from mamber1 import main as member3
-from member3.post import Post
-from member2.BoradManager import BoardManager, main as board_main
-from member3.comment import Comment
+from blogCode import submain as member3
+from blogCode.post import Post
+from blogCode.BoradManager import BoardManager, main as board_main
+from blogCode.comment import Comment
 def main(): 
     while True:
         print("\n===== 메인 메뉴 =====")
