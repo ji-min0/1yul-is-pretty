@@ -3,5 +3,3 @@ pycache/
 logs.txt
 .env
 .DS_Store
-Pipfile
-Pipfile.lock
