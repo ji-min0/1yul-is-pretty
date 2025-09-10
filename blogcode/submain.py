@@ -1,19 +1,12 @@
 # import json  # JSON 모듈을 사용해 사용자 정보를 파일로 저장/불러오기
 import mysql.connector
 from mysql.connector import Error
-from dbconfig import dbconfig
+from blogcode.dbconfig import dbconfig
 
 # 전역 변수
 #users = {}        # 모든 사용자 정보 저장
 current_user = None   # 현재 로그인한 사용자 ID 저장
 
-
-dbconfig = {
-    'host': 'localhost',
-    'user': 'root',
-    'password': 'root',
-    'database': 'hanyul'
-}
 
 def get_db():
     try:
@@ -31,12 +24,33 @@ def register_user(username, password, is_admin=False):
     # username: 사용자 ID
     # password: 비밀번호
     # is_admin: 관리자 여부 (기본값 False)
+    '''
+    if username in users:
+        print("⚠️ 이미 존재하는 사용자입니다.")
+        return False
 
     # 사용자 정보 추가
     users[username] = {"password": password, "is_admin": is_admin}
     print(f"✅ {username} 님이 회원가입 완료되었습니다.")
     return True
-
+    '''
+    adminv = 1 if is_admin else 0
+    conn =  get_db()
+    if not conn: return False
+    cursor = conn.cursor()
+    try:
+        cursor.execute("SELECT name FROM accounts WHERE name = %s", (username,))
+        if cursor.fetchone():
+            print("⚠️ 이미 존재하는 사용자입니다.")
+            return False
+        sql = "INSERT INTO accounts (name, password, admin) VALUES (%s, %s, %s)"
+        cursor.execute(sql, (username, password, adminv))
+        conn.commit()
+        print(f"✅ {username} 님이 회원가입 완료되었습니다.")
+        return True
+    except Error as e:
+        print(f"오류처리 : {e}")
+        conn.roll
 
 # 로그인 함수
 def login_user(username, password):
