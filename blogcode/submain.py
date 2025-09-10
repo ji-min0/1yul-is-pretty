@@ -1,4 +1,4 @@
-# import json  # JSON 모듈을 사용해 사용자 정보를 파일로 저장/불러오기
+# import json  # JSON 모듈을 사용해 사용자 정보를 파일로 저장/불러오기!
 import mysql.connector
 from mysql.connector import Error
 from blogcode.dbconfig import dbconfig

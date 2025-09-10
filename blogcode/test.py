@@ -1,7 +1,7 @@
 import pymysql
 from datetime import datetime
 
-# DB 연결
+# DB 연결!
 conn = pymysql.connect(
     host='localhost',
     user='root',
