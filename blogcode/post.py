@@ -2,6 +2,28 @@ import os
 from typing import List, Dict
 from datetime import datetime
 from filteringcode.filter import filter_profanity
+import pymysql
+
+# conn = pymysql.connect(
+#     host = 'local',
+#     user = 'root',
+#     passwd = 'dain8154',
+#     db = 'hanyul',
+#     charset = 'utf8mb4',
+#     cursorclass=pymysql.cursors.DictCursor
+# )
+
+
+# # CREATE TABLE blog_post(
+# # id INT auto_increment PRIMARY KEY,
+# # user_name varchar(255),
+# # title varchar(255),
+# # content varchar(255),
+# # foreign key (user_name) references accounts(name)
+# # )
+
+# with conn.cursor as cur:
+#     sql = 'INSERT INTO '
 
 class Post:
     def __init__(self, author_id: str = "Unknown"):
@@ -16,6 +38,8 @@ class Post:
         self.post_time = datetime.now().strftime("%Y.%m.%d %H:%M:%S") # 정보 저장소
         self.display_post()
         self.save_to_file()
+
+
 
     def select_category(self) -> str: 
         while True:
