@@ -1,17 +1,45 @@
 import os
 from typing import List, Dict
 from datetime import datetime
+from filteringcode.filter import filter_profanity
+import pymysql
+
+# conn = pymysql.connect(
+#     host = 'local',
+#     user = 'root',
+#     passwd = 'dain8154',
+#     db = 'hanyul',
+#     charset = 'utf8mb4',
+#     cursorclass=pymysql.cursors.DictCursor
+# )
+
+
+# # CREATE TABLE blog_post(
+# # id INT auto_increment PRIMARY KEY,
+# # user_name varchar(255),
+# # title varchar(255),
+# # content varchar(255),
+# # foreign key (user_name) references accounts(name)
+# # )
+
+# with conn.cursor as cur:
+#     sql = 'INSERT INTO '
 
 class Post:
     def __init__(self, author_id: str = "Unknown"):
         self.author_id = author_id # 작성자 ID 추가
         self.post_name = input("글의 제목을 입력 해주세요: ")
+        self.filted_post_name = filter_profanity(self.post_name)
         self.post_text = input("글의 내용을 입력 해주세요: ")
+        self.filted_post_text = filter_profanity(self.post_text)
+
         self.category = self.select_category()  # 카테고리 선택
         self.post: List[Dict[str, str]] = [] 
         self.post_time = datetime.now().strftime("%Y.%m.%d %H:%M:%S") # 정보 저장소
         self.display_post()
         self.save_to_file()
+
+
 
     def select_category(self) -> str: 
         while True:
@@ -38,11 +66,11 @@ class Post:
         separator = "-" * 60
         print(f'시간: {self.post_time}')
         print(separator)
-        print(f'제목: {self.post_name}')
+        print(f'제목: {self.filted_post_name}')
         print(separator)
         print(f'작성자: {self.author_id}')
         print(separator)
-        print(f'내용: {self.post_text}')
+        print(f'내용: {self.filted_post_text}')
         print(separator)
         print(f'카테고리: {self.category}')  # 카테고리 출력
         print(separator)
@@ -69,12 +97,11 @@ class Post:
 
         with open(file_path, 'w', encoding='utf-8') as f:
             f.write(f"시간: {self.post_time}\n")
-            f.write(f"제목: {self.post_name}\n")
+            f.write(f"제목: {self.filted_post_name}\n")
             f.write(f"작성자: {self.author_id}\n") # 작성자 ID 저장
-            f.write(f"내용: {self.post_text}\n")
+            f.write(f"내용: {self.filted_post_text}\n")
             f.write(f"카테고리: {self.category}\n")
         print(f"✅ 게시글이 {file_path}에 저장되었습니다.")
-
 
 
 
