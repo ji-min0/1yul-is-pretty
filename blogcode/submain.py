@@ -8,6 +8,8 @@ from blogcode.dbconfig import dbconfig
 current_user = None   # 현재 로그인한 사용자 ID 저장
 
 
+
+
 def get_db():
     try:
         conn = mysql.connector.connect(**dbconfig)
@@ -15,6 +17,8 @@ def get_db():
     except Error as e:
         print(f"연결오류 : {e}")
         return None
+    
+
 
 
 
