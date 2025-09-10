@@ -4,6 +4,8 @@
 
 import os
 import datetime
+from log_setup import log_event, Action
+from blogcode.submain import current_user
 
 folder_path = 'blogcode/posts' # 포스팅한 글을 모아둔 기본 폴더주소
 
@@ -33,6 +35,10 @@ class BoardManager:
             except Exception as e:
                 print(f"❗️ 처리 중 오류 발생: {e}")
 
+        # 로그 추가
+        user_id = current_user['name'] if current_user else "Unknown"
+        log_event(user_id, Action.VIEW_POST_LIST, f"전체 게시글 목록 조회: {len(posts)}개")
+
         return posts #search_content에 posts 정보를 보냄
     
     def Category_search_titles(Category): # 카테고리를 입력하면 그 카테고리를 가지고 있는 포스트들을 긁어오는 함수입니다.
@@ -59,6 +65,11 @@ class BoardManager:
 
         if not found: # 모든 파일을 다 확인한 후 카테고리에 해당하는 글이 없으면 출력됩니다.
             print('찾으시는 카테고리에 해당하는 글이 없습니다.')
+
+        # 로그 추가
+        user_id = current_user['name'] if current_user else "Unknown"
+        log_event(user_id, Action.SEARCH_POST, f"카테고리 검색: {Category}, 결과: {len(posts)}개")
+
         return posts #search_content에 posts 정보를 보냄
     
     def Latest_post(): # 글을 최신순으로 정렬하는 함수
@@ -94,6 +105,10 @@ class BoardManager:
             print(f'시간: {date_string}')
             posts.append((title, filename_map[title]))
             i += 1
+
+        # 로그 추가
+        user_id = current_user['name'] if current_user else "Unknown"
+        log_event(user_id, Action.SORT_POST, "정렬기준: 최신순")
         return posts #search_content에 posts 정보를 보냄
     
         
@@ -124,7 +139,10 @@ class BoardManager:
             print(f'{i + 1}.{title} 좋아요: {liked}')
             posts.append((title, filename_map[title]))
             i += 1
-        
+
+        # 로그 추가
+        user_id = current_user['name'] if current_user else "Unknown"
+        log_event(user_id, Action.SORT_POST, "정렬기준: 좋아요순")
         return posts #search_content에 posts 정보를 보냄
 
     def search_content(keyword):
@@ -155,6 +173,10 @@ class BoardManager:
         if not found:
             print(f"'{keyword}'를 포함하는 게시글을 찾을 수 없습니다.")
 
+        # 로그 추가
+        user_id = current_user['name'] if current_user else "Unknown"
+        log_event(user_id, Action.SEARCH_POST, f"키워드 검색: {keyword}, 결과: {len(posts)}개")
+
         return posts
     
     def show_post_content(filename):  # 특정 게시글의 전체 내용을 보여주는 함수
@@ -166,6 +188,11 @@ class BoardManager:
                 print("=" * 60)
                 print(file.read()) # 게시글 내용을 불러오기
                 print("=" * 60)
+
+            # 로그 추가
+            user_id = current_user['name'] if current_user else "Unknown"
+            log_event(user_id, Action.VIEW_POST, f"게시물 열람: {filename}")
+            
         except FileNotFoundError:
             print("해당 파일을 찾을 수 없습니다.")
         except Exception as e:

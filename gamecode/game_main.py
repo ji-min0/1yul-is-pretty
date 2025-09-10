@@ -1,13 +1,20 @@
 from gamecode.feature.Data_Loader import GameDataLoading
 from gamecode.game_logic import GameLogic
 from gamecode.ui_manager import Student
+from log_setup import log_event, Action
+from blogcode.submain import current_user
 
 def game_main():
+    user_id = current_user['name'] if current_user else "Unknown"
+
     students = {
         1: GameDataLoading(),
         2: Student(),
         3: GameLogic()
     }
+    # 게임 시작 로그 추가
+    log_event(user_id, Action.GAME_START, "게임 시작")
+
     # 1. 문제유형 질문
     unit_select = students[3].game_settting()
     # 2. 그에 맞는 파일 가져오기
@@ -34,3 +41,6 @@ def game_main():
             students[2].scoring(quiz_dict)
         # 문제를 체점합니다 (종료를 입력받으면 결과 return)
         number += 1
+    else: 
+        # 모든 문제 완료 후 종료 로그
+        log_event(user_id, Action.GAME_END, f"게임 종료 | 모든 문제 완료 | 점수: {students[2].score} | 남은 목숨: {students[2].life}")

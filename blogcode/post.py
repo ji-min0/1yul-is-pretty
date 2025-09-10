@@ -2,7 +2,7 @@ import os
 from typing import List, Dict
 from datetime import datetime
 from filteringcode.filter import filter_profanity
-import pymysql
+# import pymysql
 
 # conn = pymysql.connect(
 #     host = 'local',
