@@ -1,13 +1,17 @@
 import os
 from typing import List, Dict
 from datetime import datetime
+from filteringcode import *
+from filter import filter_profanity
 
 class Post:
     def __init__(self, author_id: str = "Unknown"):
         self.author_id = author_id # 작성자 ID 추가
-        self.post_name = input("글의 제목을 입력 해주세요: ") #!<<<<==========================================제목 작성 <<여기에 filteringcode.filter.filter_profanity를 들고 와야함...
+        self.post_name = input("글의 제목을 입력 해주세요: ") #!<<<<==========================================제목 작성 <<여기에 filteringcode.filter.filter_profanity를 들고 와야함
+        self.filted_post_name = filter_profanity(self.post_name)
 
         self.post_text = input("글의 내용을 입력 해주세요: ") #!<<<<==========================================내용 작성
+        self.filted_post_text = filter_profanity(self.post_text)
 
         self.category = self.select_category()  # 카테고리 선택
         self.post: List[Dict[str, str]] = [] 
@@ -40,11 +44,11 @@ class Post:
         separator = "-" * 60
         print(f'시간: {self.post_time}')
         print(separator)
-        print(f'제목: {self.post_name}')
+        print(f'제목: {self.filted_post_name}')
         print(separator)
         print(f'작성자: {self.author_id}')
         print(separator)
-        print(f'내용: {self.post_text}')
+        print(f'내용: {self.filted_post_text}')
         print(separator)
         print(f'카테고리: {self.category}')  # 카테고리 출력
         print(separator)

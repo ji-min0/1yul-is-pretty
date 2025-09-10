@@ -3,3 +3,4 @@ pycache/
 logs.txt
 .env
 .DS_Store
+dbconfig.py

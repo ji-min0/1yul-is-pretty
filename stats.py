@@ -16,14 +16,3 @@ def log_event(user_input: str, filtered_output: str) -> None:
         f.write(f"[{timestamp}] 입력: {user_input} -> 변환 결과: {filtered_output}\n")
 
 
-def give_praise(filtered_count):
-    """
-    통계를 보고 욕을 적게 썼으면 칭찬 메시지 출력
-    """
-
-    if filtered_count == 0:
-        print("바르고 고운 말만 사용했어요! 칭찬해요 💖")
-    elif filtered_count < 6: 
-        print("욕설을 조금만 사용했어요! 앞으로도 응원해요 🐹")
-    else: 
-        print("욕이 조금 많았어요ㅠㅠ 더 조심히 말해보아요! 💪")
