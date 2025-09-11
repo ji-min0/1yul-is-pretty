@@ -12,15 +12,14 @@ conn = pymysql.connect(
     passwd = 'dain8154',
     db = 'hanyul',
     charset = 'utf8mb4',
-    cursorclass=pymysql.cursors.DictCursor
-)
+    cursorclass=pymysql.cursors.DictCursor)
 #?============^^^=============추가한 것들================================
 
 
 
 class Post:
     def __init__(self, author_id: str = "Unknown"):
-        self.author_id = author_id # 작성자 ID 추가
+        self.author_id = author_id['name'] # 작성자 ID 추가
         self.post_name = input("글의 제목을 입력 해주세요: ")
         self.filted_post_name = filter_profanity(self.post_name)
         self.post_text = input("글의 내용을 입력 해주세요: ")
@@ -29,7 +28,7 @@ class Post:
         self.created_at = datetime.now()
         #! self.post: List[Dict[str, str]] = [] 
         # ! self.post_time = datetime.now().strftime("%Y.%m.%d %H:%M:%S") # 정보 저장소!
-        #! self.display_post()
+        self.display_post()
         #! self.save_to_file()
 
 
@@ -62,7 +61,7 @@ class Post:
                     VALUES (%s, %s, %s, %s, %s)"""
             cur.execute(sql, (self.author_id, self.filted_post_name, self.filted_post_text, self.created_at,self.category))
             conn.commit()
-            conn.close()
+        conn.close()
         print(f"✅ 게시글이 저장되었습니다.")
 
 #?============^^^=============추가한 것들================================

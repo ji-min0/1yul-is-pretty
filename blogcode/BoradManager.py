@@ -2,7 +2,7 @@
 # 포스팅 하는 포멧이 고정되어 있다는 전제로 코드를 만들었습니다.
 # 코드에 주석처리 해놨으니 읽어주세요.
 #!!!!!!!!!포멧팅 문자 에러가 있어서 다 고쳐야함!!!!!!!!!!
-
+from mysql.connector import Error
 import os
 import datetime
 import pymysql
@@ -32,7 +32,7 @@ class BoardManager:
         cur.close()
         for data in datas:
             print("=" * 60)
-            print (f'{data['id']}.제목:{data['title']}\n 시간:{data['created_at']}\n 작성자:{data['name']}')
+            print (f"{data['id']}.제목:{data['title']}\n 시간:{data['created_at']}\n 작성자:{data['name']}")
 #?==========================================================================
 
 #!================================원본=======================================
@@ -168,34 +168,36 @@ class BoardManager:
 
 #!================================원본=======================================
     def Most_liked_post(): # 글을 좋아요순으로 정렬하는 함수
-        print('👍 ==게시글 좋아요 순으로 정렬== 👍')
-        posts_liked_and_title = {} 
-        filename_map = {} #search_content를 위한 리스트
-        i = 0
-        for filename in os.listdir(folder_path):
-            file_path = os.path.join(folder_path, filename)
-            try:
-                with open(file_path, 'r', encoding='utf-8') as file:
-                    for line in file:
-                        if line.startswith("제목: "): # 제목을 가져와 title로 가져옵니다.
-                            title = line.split(':', 1)[1].strip()
-                        elif line.startswith("좋아요: "): # 좋아요:으로 시작하는 라인을 찾아옵니다.
-                            liked = line.split(':', 1)[1].strip()
-                            posts_liked_and_title[title] = liked # 제목과 시간을 posts로 딕셔너리 형태로
-                            filename_map[title] = filename #search_content를 위한 리스트
-            except Exception as e:
-                print(f"❗️ 처리 중 오류 발생: {e}")
+        print('그런기능은... 없다...')
+        pass
+        # print('👍 ==게시글 좋아요 순으로 정렬== 👍')
+        # posts_liked_and_title = {} 
+        # filename_map = {} #search_content를 위한 리스트
+        # i = 0
+        # for filename in os.listdir(folder_path):
+        #     file_path = os.path.join(folder_path, filename)
+        #     try:
+        #         with open(file_path, 'r', encoding='utf-8') as file:
+        #             for line in file:
+        #                 if line.startswith("제목: "): # 제목을 가져와 title로 가져옵니다.
+        #                     title = line.split(':', 1)[1].strip()
+        #                 elif line.startswith("좋아요: "): # 좋아요:으로 시작하는 라인을 찾아옵니다.
+        #                     liked = line.split(':', 1)[1].strip()
+        #                     posts_liked_and_title[title] = liked # 제목과 시간을 posts로 딕셔너리 형태로
+        #                     filename_map[title] = filename #search_content를 위한 리스트
+        #     except Exception as e:
+        #         print(f"❗️ 처리 중 오류 발생: {e}")
         
-        sorted_items_by_value = sorted(posts_liked_and_title.items(), key=lambda item: item[1], reverse=True)
+        # sorted_items_by_value = sorted(posts_liked_and_title.items(), key=lambda item: item[1], reverse=True)
         
-        posts = [] #search_content를 위한 리스트
-        for title, liked in sorted_items_by_value:
-            print("=" * 60)
-            print(f'{i + 1}.{title} 좋아요: {liked}')
-            posts.append((title, filename_map[title]))
-            i += 1
+        # posts = [] #search_content를 위한 리스트
+        # for title, liked in sorted_items_by_value:
+        #     print("=" * 60)
+        #     print(f'{i + 1}.{title} 좋아요: {liked}')
+        #     posts.append((title, filename_map[title]))
+        #     i += 1
         
-        return posts #search_content에 posts 정보를 보냄
+        # return posts #search_content에 posts 정보를 보냄
 #!==========================================================================
 
 #?================================수정======================================
@@ -254,8 +256,8 @@ class BoardManager:
     def show_post_content(post_id):  # 특정 게시글의 전체 내용을 보여주는 함수
         with conn.cursor() as cur:
             sql = """SELECT id, name, title, content,
-                    DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') as created_at,
-                    category
+                            DATE_FORMAT(created_at, '%%Y-%%m-%%d %%H:%%i:%%s') as created_at,
+                            category
                     FROM posts
                     WHERE id = %s"""
             cur.execute(sql, (post_id,))
@@ -278,47 +280,23 @@ class BoardManager:
 #?==========================================================================
 
 #!================================원본=======================================
-    def show_post_content(filename):  # 특정 게시글의 전체 내용을 보여주는 함수
-        file_path = os.path.join(folder_path, filename)
-        try:
-            with open(file_path, 'r', encoding='utf-8') as file:
-                print("=" * 60)
-                print("게시글 전체 내용")
-                print("=" * 60)
-                print(file.read()) # 게시글 내용을 불러오기
-                print("=" * 60)
-        except FileNotFoundError:
-            print("해당 파일을 찾을 수 없습니다.")
-        except Exception as e:
-            print(f"❗️ 파일을 읽는 중 오류가 발생했습니다: {e}")
+    # def show_post_content(filename):  # 특정 게시글의 전체 내용을 보여주는 함수
+    #     file_path = os.path.join(folder_path, filename)
+    #     try:
+    #         with open(file_path, 'r', encoding='utf-8') as file:
+    #             print("=" * 60)
+    #             print("게시글 전체 내용")
+    #             print("=" * 60)
+    #             print(file.read()) # 게시글 내용을 불러오기
+    #             print("=" * 60)
+    #     except FileNotFoundError:
+    #         print("해당 파일을 찾을 수 없습니다.")
+    #     except Exception as e:
+    #         print(f"❗️ 파일을 읽는 중 오류가 발생했습니다: {e}")
 #!==========================================================================
 
 #?================================수정======================================
-    def select_and_view_post(datas):  # 게시글 목록을 불러오면 (전체글, 카테고리, 최신순 등등) 그 상태에서 번호를 입력해 글 내용을 불러오는 함수
-        if not datas:
-            print("표시할 게시글이 없습니다.")
-            return
-        
-        try:
-            choice = int(input("\n게시글 번호를 입력하세요 (0: 취소): "))
-            if choice == 0:
-                print("취소되었습니다.")
-                return
-            elif 1 <= choice <= len(datas):
-                selected = datas[choice - 1]   # 사용자가 선택한 게시글 (dict)
-                selected_title = selected['title']
-                selected_id = selected['id']
-                print(f"\n선택한 게시글: {selected_title}")
-                BoardManager.show_post_content(selected_id)
-            else:
-                print("잘못된 번호입니다.")
-        except ValueError:
-            print("숫자를 입력해주세요.")
-
-#?==========================================================================
-
-#!================================원본=======================================
-    def select_and_view_post(posts):  # 게시글 목록을 불러오면 (전체글, 카테고리, 최신순 등등) 그 상태에서 번호를 입력해 글 내용을 불러오는 함수
+    def select_and_view_post(posts):
         if not posts:
             print("표시할 게시글이 없습니다.")
             return
@@ -328,13 +306,34 @@ class BoardManager:
                 print("취소되었습니다.")
                 return
             elif 1 <= choice <= len(posts):
-                selected_title, selected_filename = posts[choice - 1]
+                selected_title = posts[choice-1]['title']
+                selected_id = posts[choice-1]['id']
                 print(f"\n선택한 게시글: {selected_title}")
-                BoardManager.show_post_content(selected_filename)
+                BoardManager.show_post_content(selected_id)
             else:
                 print("잘못된 번호입니다.")
         except ValueError:
             print("숫자를 입력해주세요.")
+#?==========================================================================
+
+#!================================원본=======================================
+    # def select_and_view_post(posts):  # 게시글 목록을 불러오면 (전체글, 카테고리, 최신순 등등) 그 상태에서 번호를 입력해 글 내용을 불러오는 함수
+    #     if not posts:
+    #         print("표시할 게시글이 없습니다.")
+    #         return
+    #     try:
+    #         choice = int(input("\n게시글 번호를 입력하세요 (0: 취소): "))
+    #         if choice == 0:
+    #             print("취소되었습니다.")
+    #             return
+    #         elif 1 <= choice <= len(posts):
+    #             selected_title, selected_filename = posts[choice - 1]
+    #             print(f"\n선택한 게시글: {selected_title}")
+    #             BoardManager.show_post_content(selected_filename)
+    #         else:
+    #             print("잘못된 번호입니다.")
+    #     except ValueError:
+    #         print("숫자를 입력해주세요.")
 #!==========================================================================
 
 
@@ -368,8 +367,9 @@ def main():
                 posts = BoardManager.Latest_post()
                 BoardManager.select_and_view_post(posts)
             elif choice == 4:
-                posts = BoardManager.Most_liked_post()
-                BoardManager.select_and_view_post(posts)
+                posts = 'BoardManager.Most_liked_post(): 기능 미구현'
+                print(posts)
+                # BoardManager.select_and_view_post(posts)
             elif choice == 5:
                 keyword = input("검색할 키워드를 입력하세요: ")
                 posts = BoardManager.search_content(keyword)
