@@ -1,13 +1,26 @@
-from nicegui import ui, app; import platform
+import flet as ft
 
-# setup
-app.native.window_args['width'] = 960
-app.native.window_args['height'] = 600
-if platform.system() == "Windows":
-	app.native.start_args['gui'] = 'edgechromium'
 
-# header
-with ui.header().style('background: linear-gradient(to right, #9333ea, #3b82f6); color: white;'):
-	ui.label('14기 프로젝트 모음집').style('color: white; font-weight: bold;')
+def main(page: ft.Page):
+	page.title = "한율이는이쁘다"
+	page.horizontal_alignment = "center"
+	page.vertical_alignment = "center"
+	page.add(
+		ft.Container(
+            ft.Column(
+                [ft.Text("파이썬 프로젝트 모음", size=48, color="#FAFAFA",weight="bold"),
+                ft.Text("블로그 + 욕설 필터링 + 파이썬 퀴즈", size=12, color="#BEBEBE")],
+                spacing=10,
+                horizontal_alignment= "center"
+            ),
+			padding=50
+        )
+    )
+	page.add(
+        ft.Row(
+            [ft.Button('로그인'),ft.Button('회원가입')],
+			alignment="center"
+        )
+    )
 
-ui.run(title='한율이는 이쁘다', native=True, reload=False)
+ft.app(target=main)
