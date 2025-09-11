@@ -168,34 +168,36 @@ class BoardManager:
 
 #!================================원본=======================================
     def Most_liked_post(): # 글을 좋아요순으로 정렬하는 함수
-        print('👍 ==게시글 좋아요 순으로 정렬== 👍')
-        posts_liked_and_title = {} 
-        filename_map = {} #search_content를 위한 리스트
-        i = 0
-        for filename in os.listdir(folder_path):
-            file_path = os.path.join(folder_path, filename)
-            try:
-                with open(file_path, 'r', encoding='utf-8') as file:
-                    for line in file:
-                        if line.startswith("제목: "): # 제목을 가져와 title로 가져옵니다.
-                            title = line.split(':', 1)[1].strip()
-                        elif line.startswith("좋아요: "): # 좋아요:으로 시작하는 라인을 찾아옵니다.
-                            liked = line.split(':', 1)[1].strip()
-                            posts_liked_and_title[title] = liked # 제목과 시간을 posts로 딕셔너리 형태로
-                            filename_map[title] = filename #search_content를 위한 리스트
-            except Exception as e:
-                print(f"❗️ 처리 중 오류 발생: {e}")
+        print('그런기능은... 없다...')
+        pass
+        # print('👍 ==게시글 좋아요 순으로 정렬== 👍')
+        # posts_liked_and_title = {} 
+        # filename_map = {} #search_content를 위한 리스트
+        # i = 0
+        # for filename in os.listdir(folder_path):
+        #     file_path = os.path.join(folder_path, filename)
+        #     try:
+        #         with open(file_path, 'r', encoding='utf-8') as file:
+        #             for line in file:
+        #                 if line.startswith("제목: "): # 제목을 가져와 title로 가져옵니다.
+        #                     title = line.split(':', 1)[1].strip()
+        #                 elif line.startswith("좋아요: "): # 좋아요:으로 시작하는 라인을 찾아옵니다.
+        #                     liked = line.split(':', 1)[1].strip()
+        #                     posts_liked_and_title[title] = liked # 제목과 시간을 posts로 딕셔너리 형태로
+        #                     filename_map[title] = filename #search_content를 위한 리스트
+        #     except Exception as e:
+        #         print(f"❗️ 처리 중 오류 발생: {e}")
         
-        sorted_items_by_value = sorted(posts_liked_and_title.items(), key=lambda item: item[1], reverse=True)
+        # sorted_items_by_value = sorted(posts_liked_and_title.items(), key=lambda item: item[1], reverse=True)
         
-        posts = [] #search_content를 위한 리스트
-        for title, liked in sorted_items_by_value:
-            print("=" * 60)
-            print(f'{i + 1}.{title} 좋아요: {liked}')
-            posts.append((title, filename_map[title]))
-            i += 1
+        # posts = [] #search_content를 위한 리스트
+        # for title, liked in sorted_items_by_value:
+        #     print("=" * 60)
+        #     print(f'{i + 1}.{title} 좋아요: {liked}')
+        #     posts.append((title, filename_map[title]))
+        #     i += 1
         
-        return posts #search_content에 posts 정보를 보냄
+        # return posts #search_content에 posts 정보를 보냄
 #!==========================================================================
 
 #?================================수정======================================
@@ -366,8 +368,9 @@ def main():
                 posts = BoardManager.Latest_post()
                 BoardManager.select_and_view_post(posts)
             elif choice == 4:
-                posts = BoardManager.Most_liked_post()
-                BoardManager.select_and_view_post(posts)
+                posts = 'BoardManager.Most_liked_post(): 기능 미구현'
+                print(posts)
+                # BoardManager.select_and_view_post(posts)
             elif choice == 5:
                 keyword = input("검색할 키워드를 입력하세요: ")
                 posts = BoardManager.search_content(keyword)
