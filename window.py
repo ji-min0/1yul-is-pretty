@@ -1,58 +1,8 @@
-"""
-파이썬을 사용한 웹-like 디자인
-
-Includes:
-- Window: 레이어에 따라 그리고 이벤트를 처리
-- Layer: z-indexed container of widgets
-- BaseWidget: 간단한 위젯 클래스
-- Button: 마우스를 가져다 올림 / 클릭을 처리하는 버튼
-- TextLabel: 정적인 텍스트 라벨
-- TextOutput: 스크롤 가능한 텍스트박스
-
-예제
-pygame.display.set_mode. Use from your main loop like:
-
-    import pygame
-    from window import Window, Layer, Button, TextLabel, TextOutput
-
-    pygame.init()
-    screen = pygame.display.set_mode((960, 600))
-    clock = pygame.time.Clock()
-
-    ui = Window(size=screen.get_size())
-    base = ui.add_layer("base", z_index=0)
-    overlays = ui.add_layer("overlays", z_index=10)
-
-    btn = Button((24, 24, 160, 40), text="Click Me")
-    out = TextOutput((24, 80, 600, 200))
-    lbl = TextLabel((200, 24, 300, 40), text="Header")
-
-    base.add(btn)
-    base.add(lbl)
-    base.add(out)
-
-    btn.on_click = lambda b: out.append_line("Button clicked!")
-
-    running = True
-    while running:
-        dt = clock.tick(60) / 1000
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-            else:
-                ui.handle_event(event)
-
-        ui.update(dt)
-        ui.draw(screen)
-        pygame.display.flip()
-
-"""
-
 from __future__ import annotations
 
 from typing import Callable, List, Optional, Sequence, Tuple, Union
 
-import pygame
+import pygame; import os
 
 
 Color = Tuple[int, int, int]
@@ -80,6 +30,20 @@ def darken(color: Color, amount: float) -> Color:
         int(_clamp(b * (1 - amount), 0, 255)),
     )
 
+def safe_load_image(img_path:str, rect=None, alpha=False):
+        try:
+            BASE_DIR = os.path.dirname(__file__)
+            safe_paths = img_path.split("/") # 이미지 경로를 / 로 나눔
+            full_safe_path = os.path.join(BASE_DIR, *safe_paths) # path join으로 안전하게 불러오기
+            img = pygame.image.load(full_safe_path) # 이미지 로드
+            img = img.convert_alpha() if alpha else img.convert()
+            if rect:
+                img_rect = pygame.Rect(rect)
+                img = pygame.transform.scale(img, (img_rect.height,img_rect.width))
+            return img
+        except Exception as e:
+            print(e)
+            return None
 
 DEFAULT_BG: Color = (245, 246, 248)
 DEFAULT_FG: Color = (28, 30, 33)
@@ -89,6 +53,7 @@ BORDER: Color = (180, 185, 190)
 SURFACE: Color = (255, 255, 255)
 
 
+
 def ensure_font_initialized() -> None:
     if not pygame.font.get_init():
         pygame.font.init()
@@ -96,17 +61,17 @@ def ensure_font_initialized() -> None:
 
 def default_font(size: int = 16) -> pygame.font.Font:
     ensure_font_initialized()
-    return pygame.font.Font(None, size)
+    try:
+        return pygame.font.Font(os.path.join("assets","font.ttf"), size)
+    except:
+        return pygame.font.Font(None, size)
 
 
 # ---------- Core Widgets ----------
 
 
 class BaseWidget:
-    
-    #자식 클래스를 만들어 오버라이드가 필요합니다
-
-    def __init__(self, rect: RectLike, visible: bool = True, enabled: bool = True):
+    def __init__(self, rect: RectLike = (0,0,0,0), visible: bool = True, enabled: bool = True):
         self.rect: pygame.Rect = pygame.Rect(rect)
         self.visible: bool = visible
         self.enabled: bool = enabled
@@ -201,6 +166,34 @@ class TextLabel(BaseWidget):
         ty = r.centery - ts.get_height() // 2
         surface.blit(ts, (tx, ty))
 
+class Animation():
+    def __init__(
+            self,
+            duration = 0.15
+        ):
+        self.progress = 0.0 # 0 ~ 1
+        self.duration = duration
+        self.current_duration = 0.0
+        self.direction = 0
+    def reset(self):
+        self.progress = 0.0
+        self.current_duration = 0
+    def update(self,dt) -> float:
+        if self.is_playing:
+            self.current_duration += dt * self.direction
+            self.progress = min(1, max(0, self.current_duration / self.duration))
+
+class Image(BaseWidget):
+    def __init__(
+        self,
+        image_path: str,
+        rect: RectLike = None
+        ):
+        super().__init__()
+        self._is_pressed = False
+        self.img = safe_load_image(image_path,rect)
+    def draw_self(self, surface = pygame.surface):
+        surface.blit(self.img,self.rect.topleft)
 
 class Button(BaseWidget):
     def __init__(
@@ -227,6 +220,7 @@ class Button(BaseWidget):
         self.border_radius = border_radius
         self._font = default_font(font_size)
         self._is_pressed = False
+        self.hover_anim = Animation()
 
     def handle_event(self, event: pygame.event.Event) -> bool:
         if not (self.enabled and self.visible):
@@ -258,6 +252,9 @@ class Button(BaseWidget):
             bg = self.pressed_bg
         elif self.hovered:
             bg = self.hover_bg
+            self.hover_anim.direction = 1
+        else:
+            self.hover_anim.direction = -1
 
         pygame.draw.rect(surface, bg, r, border_radius=self.border_radius)
         pygame.draw.rect(surface, darken(bg, 0.28), r, width=1, border_radius=self.border_radius)
@@ -295,7 +292,7 @@ class TextOutput(BaseWidget):
         self._scroll: int = 0  # in pixels, 0 means bottom-most (auto)
 
     # ----- API -----
-    def append_line(self, text: str) -> None:
+    def print(self, text: str) -> None:
         self._lines.append(text)
         if len(self._lines) > self.max_lines:
             overflow = len(self._lines) - self.max_lines
@@ -355,6 +352,202 @@ class TextOutput(BaseWidget):
             y += line_h
             idx += 1
 
+class TextInput(BaseWidget):
+    def init(
+        self,
+        rect: RectLike,
+        text: str = "",
+        *,
+        placeholder: str = "",
+        font_size: int = 18,
+        fg: Color = DEFAULT_FG,
+        bg: Color = SURFACE,
+        border_color: Color = BORDER,
+        focus_color: Color = ACCENT,
+        padding: int = 8,
+        border_radius: int = 8,
+        on_submit: Optional[Callable[["TextInput", str], None]] = None,
+        ):
+        super().init(rect)
+        self.text = text
+        self.placeholder = placeholder
+        self.font_size = font_size
+        self.fg = fg
+        self.bg = bg
+        self.border_color = border_color
+        self.focus_color = focus_color
+        self.padding = padding
+        self.border_radius = border_radius
+        self.on_submit = on_submit
+        self._font = default_font(font_size)
+        self._focused = False
+        self._caret = len(text)
+        self._blink_time = 0.0
+        self._blink_visible = True
+        self._blink_interval = 0.55
+        self._scroll_px = 0  # v scroll
+
+    def focus(self) -> None:
+        self._focused = True
+        self._blink_time = 0.0
+        self._blink_visible = True
+        try:
+            pygame.key.start_text_input()
+        except Exception:
+            pass
+
+    def blur(self) -> None:
+        self._focused = False
+        try:
+            pygame.key.stop_text_input()
+        except Exception:
+            pass
+# Text helpers
+    def set_text(self, text: str) -> None:
+        self.text = text
+        self._caret = min(self._caret, len(self.text))
+        self._ensure_caret_visible()
+
+    def _insert_text(self, s: str) -> None:
+        if not s:
+            return
+        self.text = self.text[: self._caret] + s + self.text[self._caret :]
+        self._caret += len(s)
+        self._ensure_caret_visible()
+
+    def _backspace(self) -> None:
+        if self._caret > 0:
+            self.text = self.text[: self._caret - 1] + self.text[self._caret :]
+            self._caret -= 1
+            self._ensure_caret_visible()
+
+    def _delete(self) -> None:
+        if self._caret < len(self.text):
+            self.text = self.text[: self._caret] + self.text[self._caret + 1 :]
+            self._ensure_caret_visible()
+
+    def _move_caret(self, delta: int) -> None:
+        self._caret = int(_clamp(self._caret + delta, 0, len(self.text)))
+        self._ensure_caret_visible()
+
+    def _caret_home(self) -> None:
+        self._caret = 0
+        self._ensure_caret_visible()
+
+    def _caret_end(self) -> None:
+        self._caret = len(self.text)
+        self._ensure_caret_visible()
+
+    def _text_width(self, s: str) -> int:
+        return self._font.size(s)[0]
+
+    def _caret_px(self) -> int:
+        return self._text_width(self.text[: self._caret])
+
+    def _ensure_caret_visible(self) -> None:
+        inner = self.abs_rect.inflate(-2 * self.padding, -2 * self.padding)
+        caret_x = self._caret_px()
+        if caret_x - self._scroll_px > inner.w - 2:
+            self._scroll_px = caret_x - inner.w + 2
+        if caret_x - self._scroll_px < 0:
+            self._scroll_px = caret_x - 2
+        self._scroll_px = max(0, self._scroll_px)
+
+    # Events
+    def handle_event(self, event: pygame.event.Event) -> bool:
+        if not (self.enabled and self.visible):
+            return False
+
+        if super().handle_event(event):
+            return True
+
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            inside = self.contains_point(event.pos)
+            if inside:
+                self.focus()
+                inner = self.abs_rect.inflate(-2 * self.padding, -2 * self.padding)
+                cx = event.pos[0] - inner.x + self._scroll_px
+                best_i, best_dx = 0, 1e9
+                for i in range(len(self.text) + 1):
+                    x = self._text_width(self.text[:i])
+                    dx = abs(x - cx)
+                    if dx < best_dx:
+                        best_i, best_dx = i, dx
+                self._caret = best_i
+                self._ensure_caret_visible()
+                return True
+            else:
+                if self._focused:
+                    self.blur()
+                return False
+
+        if not self._focused:
+            return False
+
+        if event.type == getattr(pygame, "TEXTINPUT", None):
+            self._insert_text(event.text)
+            return True
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_BACKSPACE:
+                self._backspace(); return True
+            if event.key == pygame.K_DELETE:
+                self._delete(); return True
+            if event.key == pygame.K_LEFT:
+                self._move_caret(-1); return True
+            if event.key == pygame.K_RIGHT:
+                self._move_caret(1); return True
+            if event.key == pygame.K_HOME:
+                self._caret_home(); return True
+            if event.key == pygame.K_END:
+                self._caret_end(); return True
+            if event.key in (pygame.K_RETURN, pygame.K_KP_ENTER):
+                if self.on_submit:
+                    self.on_submit(self, self.text)
+                return True
+        return False
+
+    # Update / Draw
+    def update(self, dt: float) -> None:
+        super().update(dt)
+        if self._focused:
+            self._blink_time += dt
+            if self._blink_time >= self._blink_interval:
+                self._blink_time -= self._blink_interval
+                self._blink_visible = not self._blink_visible
+        else:
+            self._blink_visible = False
+
+    def draw_self(self, surface: pygame.Surface) -> None:
+        r = self.abs_rect
+        inner = r.inflate(-2 * self.padding, -2 * self.padding)
+
+        pygame.draw.rect(surface, self.bg, r, border_radius=self.border_radius)
+        border_col = self.focus_color if self._focused else self.border_color
+        pygame.draw.rect(surface, border_col, r, width=1, border_radius=self.border_radius)
+
+        prev_clip = surface.get_clip()
+        surface.set_clip(inner)
+
+        txt_color = self.fg if (self.text or self._focused) else MUTED
+        display_text = self.text if self.text else self.placeholder
+        text_x = inner.x - self._scroll_px
+        text_y = inner.centery - self._font.get_height() // 2
+        ts = self._font.render(display_text, True, txt_color)
+        surface.blit(ts, (text_x, text_y))
+
+        if self._focused and self._blink_visible:
+            caret_x = inner.x + self._caret_px() - self._scroll_px
+            caret_y1 = inner.y + 3
+            caret_y2 = inner.bottom - 3
+            pygame.draw.line(surface, txt_color, (caret_x, caret_y1), (caret_x, caret_y2), 1)
+        
+        surface.set_clip(prev_clip)
+
+
+
+
+
 
 # ---------- Layer & Window ----------
 
@@ -395,6 +588,7 @@ class Layer:
             return
         for w in self.widgets:
             w.draw(surface)
+
 
 
 class Window:
@@ -442,7 +636,6 @@ class Window:
         for layer in self._layers:
             layer.draw(surface)
 
-
 __all__ = [
     "Window",
     "Layer",
@@ -450,4 +643,7 @@ __all__ = [
     "Button",
     "TextLabel",
     "TextOutput",
+    "TextInput",
+    "Animation",
+    "Image",
 ]
