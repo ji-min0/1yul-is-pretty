@@ -1,30 +1,37 @@
 import os
 from datetime import datetime 
 from filteringcode.filter import filter_profanity
-import mysql.connector
-from mysql.connector import Error
-from dbconfig import dbconfig
+# import mysql.connector
+# from mysql.connector import Error
+# from dbconfig import dbconfig
 from log_setup import log_event, Action
-from comments_setup import create_comments_table
+# from blogcode.submain import current_user
 
 
 class Comment:
-    def __init__(self, author_id="Unknown"):
+    def __init__(self, author_id=None):
         self.post_dir = 'blogcode/posts'
-        self.author_id = author_id
+        # author_id가 None이면 "Unknown" 처리
+        if author_id is None:
+            self.author_id = "Unknown"
+        else:
+            # 혹시 dict로 들어오는 경우 대비
+            if isinstance(author_id, dict):
+                self.author_id = author_id.get("name", "Unknown")
+            else:
+                self.author_id = str(author_id)
+
         os.makedirs(self.post_dir, exist_ok=True)
         self.existing_files = [f for f in os.listdir(self.post_dir) if f.endswith('.txt') and f.split('.')[0].isdigit()]
     
-        # 테이블 없으면 생성
-        create_comments_table()
         
-    def get_db(self):
-        try:
-            conn = mysql.connector.connect(**dbconfig)
-            return conn
-        except Error as e:
-            print(f"연결오류 : {e}")
-            return None
+    # def get_db(self):
+    #     try:
+    #         conn = mysql.connector.connect(**dbconfig)
+    #         return conn
+    #     except Error as e:
+    #         print(f"연결오류 : {e}")
+    #         return None
     
     def show_available_posts(self):
         if not self.existing_files:
@@ -71,42 +78,14 @@ class Comment:
         comment_text = input("댓글 내용을 입력하세요: ")
         
 
-        # # 욕설 필터링 (댓글)
-        # filtered_comment = filter_profanity(comment_text)
+        # 욕설 필터링 (댓글)
+        filtered_comment = filter_profanity(comment_text)
+        print(f"\n➡️ 필터링된 댓글 미리보기: {filtered_comment}")
 
-        # # dict -> str
-        # import json
-        # try:
-        #     filtered_comment_str = json.dumps(filtered_comment, ensure_ascii=False)
-        # except (TypeError, ValueError): 
-        #     filtered_comment_str = str(filtered_comment)
         # current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")        
-        
-        # # DB에 저장
-        # conn = self.get_db()
-        # cursor = None
-        # if conn: 
-        #     try: 
-        #         cursor = conn.cursor()
-        #         sql = """
-        #         INSERT INTO comments (post_id, author_id, content, filtered, timestamp)
-        #         VALUES (%s, %s, %s, %s, %s)
-        #         """
-        #         cursor.execute(sql, (post_num, self.author_id, comment_text, filtered_comment_str, current_time))
-        #         conn.commit()
-        #     except Error as e: 
-        #         print(f"⚠️ 댓글 DB 저장 오류: {e}")
-        #     finally: 
-        #         if cursor: 
-        #             cursor.close()
-        #         conn.close()
 
-
-        # log 기록
+        # 로그 기록 남기기
         log_event(self.author_id, Action.COMMENT, f"게시물ID: {post_num}")
-        print("✅ 댓글이 성공적으로 작성되었습니다!")
-        print("게시글 목록에서 댓글을 확인할 수 있습니다.")
-    
 
 
 if __name__ == "__main__":

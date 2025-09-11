@@ -3,6 +3,7 @@ import mysql.connector
 from mysql.connector import Error
 from dbconfig import dbconfig
 from log_setup import log_event, Action
+from accounts_setup import create_accounts_table
 
 # 전역 변수
 #users = {}        # 모든 사용자 정보 저장
@@ -12,6 +13,10 @@ current_user = None   # 현재 로그인한 사용자 ID 저장
 def get_db():
     try:
         conn = mysql.connector.connect(**dbconfig)
+
+        # 테이블이 없으면 자동 생성
+        create_accounts_table()
+
         return conn
     except Error as e:
         print(f"연결오류 : {e}")
