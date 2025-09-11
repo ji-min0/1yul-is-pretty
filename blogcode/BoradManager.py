@@ -33,6 +33,7 @@ class BoardManager:
         for data in datas:
             print("=" * 60)
             print (f"{data['id']}.제목:{data['title']}\n 시간:{data['created_at']}\n 작성자:{data['name']}")
+        return datas
 #?==========================================================================
 
 #!================================원본=======================================
@@ -123,6 +124,7 @@ class BoardManager:
         for data in datas:
             print("=" * 60)
             print(f"시간: {data['created_at']}, 제목: {data['title']}, 작성자: {data['name']}")
+        return datas
 #?==========================================================================
 
 
