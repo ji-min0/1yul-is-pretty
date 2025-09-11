@@ -3,11 +3,10 @@ import mysql.connector
 from mysql.connector import Error
 from dbconfig import dbconfig
 from log_setup import log_event, Action
-from accounts_setup import create_accounts_table
 
 # 전역 변수
-#users = {}        # 모든 사용자 정보 저장
-current_user = None   # 현재 로그인한 사용자 ID 저장
+# users = {}        # 모든 사용자 정보 저장
+current_user = None  # 현재 로그인한 사용자 ID 저장
 
 
 def get_db():
@@ -15,13 +14,12 @@ def get_db():
         conn = mysql.connector.connect(**dbconfig)
 
         # 테이블이 없으면 자동 생성
-        create_accounts_table()
+        #create_accounts_table()
 
         return conn
     except Error as e:
         print(f"연결오류 : {e}")
         return None
-
 
 
 # 회원가입 함수
@@ -31,7 +29,7 @@ def register_user(username, password, is_admin=False):
     # password: 비밀번호
     # is_admin: 관리자 여부 (기본값 False)
     admin = 1 if is_admin else 0
-    conn =  get_db()
+    conn = get_db()
     if not conn: return False
     cursor = conn.cursor()
     try:
@@ -42,7 +40,7 @@ def register_user(username, password, is_admin=False):
         sql = "INSERT INTO accounts (name, password, admin) VALUES (%s, %s, %s)"
         cursor.execute(sql, (username, password, admin))
         conn.commit()
-        
+
         # log 기록
         log_event(username, Action.SIGNUP, f"admin 여부: {is_admin}")
         return True
@@ -50,6 +48,7 @@ def register_user(username, password, is_admin=False):
         print(f"오류처리 : {e}")
         conn.rollback()
         return False
+
 
 # 로그인 함수
 def login_user(username, password):
@@ -86,7 +85,6 @@ def login_user(username, password):
     finally:
         cursor.close()
         conn.close()
-        
 
 
 # 로그아웃 함수

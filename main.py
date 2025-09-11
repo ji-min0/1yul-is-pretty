@@ -1,6 +1,6 @@
 from blogcode import submain
 from blogcode.post import Post
-from blogcode.BoradManager import BoardManager, main as board_main
+from blogcode.BoradManager import main as board_main
 from blogcode.comment import Comment
 from gamecode.game_main import game_main
 from log_setup import creat_log_table

@@ -1,5 +1,5 @@
-from filter import filter_profanity
-from stats import log_event, give_praise
+from filteringcode.filter import filter_profanity
+from filteringcode.stats import log_event, give_praise
 import os, sys
 
 def main():
