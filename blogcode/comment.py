@@ -1,15 +1,44 @@
-import os
-from typing import List, Dict
+import os, pymysql
 from datetime import datetime 
+from filteringcode.filter import filter_profanity
+# import mysql.connector
+# from mysql.connector import Error
+# from dbconfig import dbconfig
+from log_setup import log_event, Action
+# from blogcode.submain import current_user
 
 class Comment:
     def __init__(self, author_id="Unknown"):
         self.post_dir = 'blogcode/posts'
-        self.author_id = author_id
+        # author_id가 None이면 "Unknown" 처리
+        if author_id is None:
+            self.author_id = "Unknown"
+        else:
+            # 혹시 dict로 들어오는 경우 대비
+            if isinstance(author_id, dict):
+                self.author_id = author_id.get("name", "Unknown")
+            else:
+                self.author_id = str(author_id)
+
         os.makedirs(self.post_dir, exist_ok=True)
         self.existing_files = [f for f in os.listdir(self.post_dir) if f.endswith('.txt') and f.split('.')[0].isdigit()]
-    
-
+        # 데이터베이스 연결 설정
+        self.conn = pymysql.connect(
+            host = 'localhost',
+            user = 'root',
+            passwd = 'dain8154',
+            db = 'hanyul',
+            charset = 'utf8mb4',
+            cursorclass=pymysql.cursors.DictCursor
+        )
+       
+    # def get_db(self):
+    #     try:
+    #         conn = mysql.connector.connect(**dbconfig)
+    #         return conn
+    #     except Error as e:
+    #         print(f"연결오류 : {e}")
+    #         return None
     
     def show_available_posts(self):
         if not self.existing_files:
@@ -52,23 +81,36 @@ class Comment:
                 print("숫자를 입력하세요. 다시 시도하세요.")
         
         print(f"\n--- {post_num}번 게시물에 댓글 작성 ---")
-        print(f"작성자: {self.author_id}")
+        print(f"작성자: {self.author_id}") # 여기는 수정 필요할 듯
         comment_text = input("댓글 내용을 입력하세요: ")
         
-        current_time = datetime.now().strftime("%Y.%m.%d %H:%M:%S")
-        
-        post_file = os.path.join(self.post_dir, f"{post_num}.txt")
-        
-        with open(post_file, 'a', encoding='utf-8') as f:
-            f.write(f"\n[댓글]\n")
-            f.write(f"작성시간: {current_time}\n")
-            f.write(f"작성자: {self.author_id}\n")
-            f.write(f"내용: {comment_text}\n")
-            f.write("=" * 40 + "\n")
-        
-        print("✅ 댓글이 성공적으로 작성되었습니다!")
-        print("게시글 목록에서 댓글을 확인할 수 있습니다.")
-    
+
+        # 욕설 필터링 (댓글)
+        filtered_comment = filter_profanity(comment_text)
+        print(f"\n➡️ 필터링된 댓글 미리보기: {filtered_comment}")
+
+        # current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")        
+
+        # 로그 기록 남기기
+        log_event(self.author_id, Action.COMMENT, f"게시물ID: {post_num}")
+
+        # database에 저장
+        self.insert_comment({"post_id" :post_num, "comment_text" : comment_text, "filtered_comment" : filtered_comment});
+
+    def insert_comment(self, data:dict):
+        conn = self.conn
+        created_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+        try:
+            with conn.cursor() as cur:
+                sql = """INSERT INTO comments(account_id, post_id, content_original, content_filtered, created_at)
+                        VALUES (%s, %s, %s, %s, %s)"""
+                cur.execute(sql, (self.author_id, data["post_id"], data["comment_text"], data["filtered_comment"], created_at))
+                conn.commit()
+            print(f"✅ 게시글이 저장되었습니다.")
+        finally:    
+            # 데이터베이스 연결 종료
+            conn.close()
 
 
 if __name__ == "__main__":
