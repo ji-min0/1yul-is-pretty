@@ -296,7 +296,7 @@ class BoardManager:
 #!==========================================================================
 
 #?================================수정======================================
-    def select_and_view_post(self, posts):  # 게시글 목록을 불러오면 (전체글, 카테고리, 최신순 등등) 그 상태에서 번호를 입력해 글 내용을 불러오는 함수
+    def select_and_view_post(posts):
         if not posts:
             print("표시할 게시글이 없습니다.")
             return
@@ -306,11 +306,10 @@ class BoardManager:
                 print("취소되었습니다.")
                 return
             elif 1 <= choice <= len(posts):
-                print(posts)
-                selected_title, selected_filename = posts[choice-1]['title'], posts[choice-1]['id']
-                print(selected_title, selected_filename)
+                selected_title = posts[choice-1]['title']
+                selected_id = posts[choice-1]['id']
                 print(f"\n선택한 게시글: {selected_title}")
-                self.show_post_content(selected_filename)
+                BoardManager.show_post_content(selected_id)
             else:
                 print("잘못된 번호입니다.")
         except ValueError:
