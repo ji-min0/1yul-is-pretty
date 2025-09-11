@@ -6,16 +6,17 @@ from mysql.connector import Error
 import os
 import datetime
 import pymysql
+from dbconfig import dbconfig
 
-#?=================================추가====================================
-conn = pymysql.connect(
-    host = 'localhost',
-    user = 'root',
-    passwd = 'dain8154',
-    db = 'hanyul',
-    charset = 'utf8mb4',
-    cursorclass=pymysql.cursors.DictCursor)
-#?========================================================================
+def get_connection():
+    return pymysql.connect(
+        host=dbconfig['host'],
+        user=dbconfig['user'],
+        password=dbconfig['password'],
+        db=dbconfig['database'],
+        charset=dbconfig['charset'],
+        cursorclass=pymysql.cursors.DictCursor
+    )
 
 folder_path = 'blogcode/posts' # 포스팅한 글을 모아둔 기본 폴더주소
 
@@ -24,15 +25,17 @@ class BoardManager:
 #?===============================수정=======================================
     def get_titles_from_post():
         print('📃 ==게시글 목록== 📃')
+        conn = get_connection()
         with conn.cursor() as cur:
             sql = """SELECT id ,name, title, content, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') as created_at, category
         FROM posts;"""
             cur.execute(sql)
             datas = cur.fetchall()
-        cur.close()
+        conn.close()
         for data in datas:
             print("=" * 60)
             print (f"{data['id']}.제목:{data['title']}\n 시간:{data['created_at']}\n 작성자:{data['name']}")
+        return datas
 #?==========================================================================
 
 #!================================원본=======================================
@@ -64,13 +67,14 @@ class BoardManager:
 #?================================수정=======================================
     def Category_search_titles(Category): # 카테고리를 입력하면 그 카테고리를 가지고 있는 포스트들을 긁어오는 함수입니다.
         print(f'🏷️ ==카테고리가 {Category}인 게시글 목록== 🏷️')
+        conn = get_connection()
         with conn.cursor() as cur:
             sql = """SELECT id ,name, title, content, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') as created_at, category
         FROM posts;"""
             cur.execute(sql)
             datas = cur.fetchall()
-        cur.close()
-        found = False 
+        conn.close()
+        found = False
         for data in datas:
             if Category == data['category']:
                 print("=" * 60)
@@ -114,12 +118,13 @@ class BoardManager:
 #?================================수정======================================
     def Latest_post(): # 글을 최신순으로 정렬하는 함수
         print('⏰ ==게시글 최신순으로 정렬== ⏰')
+        conn = get_connection()
         with conn.cursor() as cur:
             sql = """SELECT id ,name, title, content, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') as created_at, category
         FROM posts ORDER BY created_at DESC;"""
             cur.execute(sql)
             datas = cur.fetchall()
-        cur.close()
+        conn.close()
         for data in datas:
             print("=" * 60)
             print(f"시간: {data['created_at']}, 제목: {data['title']}, 작성자: {data['name']}")
@@ -143,7 +148,7 @@ class BoardManager:
     #                         title = line.split(':', 1)[1].strip()
     #                         filename_map[title] = filename  #search_content를 위한 리스트 매핑
     #                         try:
-    #                             post_time = datetime.datetime.strptime(time, "%Y.%m.%d %H:%M:%S") # 시간을 datetime.datetime.strptime를 사용해 객체로 만들어 뒤에 sorted로 비교할 수 있게 만들었습니다. 
+    #                             post_time = datetime.datetime.strptime(time, "%Y.%m.%d %H:%M:%S") # 시간을 datetime.datetime.strptime를 사용해 객체로 만들어 뒤에 sorted로 비교할 수 있게 만들었습니다.
     #                             posts_time_and_title[title] = post_time # 제목과 시간을 posts로 딕셔너리 형태로 넣습니다.
     #                         except Exception as e:
     #                             print(f"❗️ 처리 중 오류 발생: {e}")
@@ -151,7 +156,7 @@ class BoardManager:
     #             print(f"❗️ 처리 중 오류 발생: {e}")
 
         # sorted_items_by_value = sorted(posts_time_and_title.items(), key=lambda item: item[1], reverse=True) #posts안의 item[1]즉 시간을 기준으로 정렬하라는 내용입니다.
-        
+
         # posts = [] #search_content를 위한 리스트
         # for title, time in sorted_items_by_value:
         #     date_string = time.strftime("%Y.%m.%d %H:%M:%S") # 시간을 다시 strftime로 지정한 포멧을 바꾸어 str로 바꿉니다.
@@ -171,7 +176,7 @@ class BoardManager:
         print('그런기능은... 없다...')
         pass
         # print('👍 ==게시글 좋아요 순으로 정렬== 👍')
-        # posts_liked_and_title = {} 
+        # posts_liked_and_title = {}
         # filename_map = {} #search_content를 위한 리스트
         # i = 0
         # for filename in os.listdir(folder_path):
@@ -187,29 +192,30 @@ class BoardManager:
         #                     filename_map[title] = filename #search_content를 위한 리스트
         #     except Exception as e:
         #         print(f"❗️ 처리 중 오류 발생: {e}")
-        
+
         # sorted_items_by_value = sorted(posts_liked_and_title.items(), key=lambda item: item[1], reverse=True)
-        
+
         # posts = [] #search_content를 위한 리스트
         # for title, liked in sorted_items_by_value:
         #     print("=" * 60)
         #     print(f'{i + 1}.{title} 좋아요: {liked}')
         #     posts.append((title, filename_map[title]))
         #     i += 1
-        
+
         # return posts #search_content에 posts 정보를 보냄
 #!==========================================================================
 
 #?================================수정======================================
     def search_content(keyword):
         print(f"🔎 == 내용에 '{keyword}'가 포함된 게시글 검색 결과 == 🔎")
+        conn = get_connection()
         with conn.cursor() as cur:
             sql = """SELECT id ,name, title, content, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') as created_at, category
         FROM posts;"""
             cur.execute(sql)
             datas = cur.fetchall()
-        cur.close()
-        found = False 
+        conn.close()
+        found = False
         for data in datas:
             if keyword in data['content']:
                 print("=" * 60)
@@ -254,6 +260,7 @@ class BoardManager:
 
 #?================================수정======================================
     def show_post_content(post_id):  # 특정 게시글의 전체 내용을 보여주는 함수
+        conn = get_connection()
         with conn.cursor() as cur:
             sql = """SELECT id, name, title, content,
                             DATE_FORMAT(created_at, '%%Y-%%m-%%d %%H:%%i:%%s') as created_at,
@@ -262,7 +269,7 @@ class BoardManager:
                     WHERE id = %s"""
             cur.execute(sql, (post_id,))
             post = cur.fetchone()
-
+        conn.close()
         if post:
             print("=" * 60)
             print("게시글 전체 내용")
