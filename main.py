@@ -1,4 +1,4 @@
-from blogcode import submain
+import submain
 from blogcode.post import Post
 from blogcode.BoradManager import main as board_main
 from blogcode.comment import Comment
