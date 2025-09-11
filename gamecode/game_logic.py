@@ -69,7 +69,7 @@ class  GameLogic:
         if select_values == "종료":
             sys.exit()
         elif select_values not in exact_list:
-            while True:
+             while True:
                 # 올바른 입력을 받을 때까지 반복합니다. 
                 print("⚠️ 잘못된 유형입니다. ",messages,"중 하나를 입력하세요.")
                 select_values = input("🕹️다시 입력해주세요: ").strip()
