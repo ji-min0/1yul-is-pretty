@@ -1,7 +1,7 @@
 # import json  # JSON 모듈을 사용해 사용자 정보를 파일로 저장/불러오기!
 import mysql.connector
 from mysql.connector import Error
-from blogcode.dbconfig import dbconfig
+from dbconfig import dbconfig
 
 # 전역 변수
 #users = {}        # 모든 사용자 정보 저장

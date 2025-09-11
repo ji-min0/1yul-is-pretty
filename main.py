@@ -7,6 +7,7 @@ from gamecode.game_main import game_main
 def main():
     while True:
         current_user = getattr(submain, 'current_user', None)
+        
         print("\n===== 메인 메뉴 =====")
         
         if current_user:
