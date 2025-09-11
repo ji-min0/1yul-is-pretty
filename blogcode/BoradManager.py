@@ -7,6 +7,8 @@ import os
 import datetime
 import pymysql
 from dbconfig import dbconfig
+from log_setup import log_event, Action
+from blogcode.submain import current_user
 
 def get_connection():
     return pymysql.connect(
@@ -35,6 +37,11 @@ class BoardManager:
         for data in datas:
             print("=" * 60)
             print (f"{data['id']}.제목:{data['title']}\n 시간:{data['created_at']}\n 작성자:{data['name']}")
+        
+        # 로그 추가
+        user_id = current_user['name'] if current_user else "Unknown"
+        log_event(user_id, Action.VIEW_POST_LIST, f"전체 게시글 목록 조회: {len(datas)}개")
+
         return datas
 #?==========================================================================
 
@@ -80,6 +87,11 @@ class BoardManager:
                 print("=" * 60)
                 print(f"{data['id']}. 제목: {data['title']}\n 시간: {data['created_at']}\n 작성자: {data['name']}")
                 found = True
+
+                # 로그 추가
+                user_id = current_user['name'] if current_user else "Unknown"
+                log_event(user_id, Action.SEARCH_POST, f"카테고리 검색: {Category}, 결과: {len(datas)}개")
+
                 return datas
         if not found:
             print("❗ 해당 카테고리에 속하는 게시글이 없습니다.")
@@ -128,6 +140,11 @@ class BoardManager:
         for data in datas:
             print("=" * 60)
             print(f"시간: {data['created_at']}, 제목: {data['title']}, 작성자: {data['name']}")
+
+        # 로그 추가
+        user_id = current_user['name'] if current_user else "Unknown"
+        log_event(user_id, Action.SORT_POST, "정렬기준: 최신순")
+        return datas
 #?==========================================================================
 
 
@@ -202,6 +219,9 @@ class BoardManager:
         #     posts.append((title, filename_map[title]))
         #     i += 1
 
+        # # 로그 추가
+        # user_id = current_user['name'] if current_user else "Unknown"
+        # log_event(user_id, Action.SORT_POST, "정렬기준: 좋아요순")
         # return posts #search_content에 posts 정보를 보냄
 #!==========================================================================
 
@@ -221,6 +241,11 @@ class BoardManager:
                 print("=" * 60)
                 print(f"{data['id']}. 제목: {data['title']}\n 시간: {data['created_at']}\n 작성자: {data['name']}")
                 found = True
+
+                # 로그 추가
+                user_id = current_user['name'] if current_user else "Unknown"
+                log_event(user_id, Action.SEARCH_POST, f"키워드 검색: {keyword}, 결과: {len(datas)}개")
+
                 return datas
         if not found:
             print(f"'{keyword}'를 포함하는 게시글을 찾을 수 없습니다.")
@@ -281,6 +306,11 @@ class BoardManager:
             print("=" * 60)
             print(post['content'])
             print("=" * 60)
+
+            # 로그 추가
+            user_id = current_user['name'] if current_user else "Unknown"
+            log_event(user_id, Action.VIEW_POST, f"게시물 열람: {post['title']}")
+            
         else:
             print("❗ 해당 게시글을 찾을 수 없습니다.")
 
