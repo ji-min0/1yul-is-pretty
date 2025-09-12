@@ -29,7 +29,7 @@ class Post:
         self.category = self.select_category()  # 카테고리 선택
         self.created_at = datetime.now()
         #! self.post: List[Dict[str, str]] = []
-        # ! self.post_time = datetime.now().strftime("%Y.%m.%d %H:%M:%S") # 정보 저장소!
+        #! self.post_time = datetime.now().strftime("%Y.%m.%d %H:%M:%S") # 정보 저장소!
         self.display_post()
         #! self.save_to_file()
 

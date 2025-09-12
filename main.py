@@ -1,7 +1,7 @@
 from blogcode import submain
 from blogcode.post import Post
 from blogcode.BoradManager import BoardManager, main as board_main
-from blogcode.comment import Comment
+from blogcode.comment import *
 from gamecode.game_main import game_main
 from log_setup import creat_log_table
 
@@ -36,8 +36,8 @@ def main():
             elif command == "2":
                 board_main()
             elif command == "3":
-                comment = Comment(current_user)
-                comment.execute()
+                comment_main(current_user)
+                # comment.execute()
             elif command == "4":
                 game_main()
             elif command == "5":

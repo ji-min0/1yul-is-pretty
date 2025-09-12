@@ -1,7 +1,7 @@
 dbconfig = {
     'host': 'localhost',
     'user': 'root',
-    'password': '1234',
+    'password': 'dain8154',
     'database': 'hanyul',
     'charset': 'utf8mb4'
 }
