@@ -1,0 +1,101 @@
+quiz_id,level,chapter,questions,choices,answers,explanations
+1,1,1. 변수와 데이터 타입,파이썬에서 변수 이름으로 사용할 수 없는 것은?,A) my_var\nB) _value\nC) 2ndvalue\nD) studentName,C,숫자로 시작하는 변수명(2ndvalue)은 사용할 수 없습니다.
+2,1,1. 변수와 데이터 타입,파이썬에서 정수형을 의미하는 데이터 타입은?,A) int\nB) float\nC) str\nD) bool,A,int는 정수형을 표현하는 데이터 타입입니다.
+3,1,1. 변수와 데이터 타입,다음 중 불리언(Boolean) 값인 것은?,A) True\nB) 'False'\nC) 0\nD) '0',A,"True만이 불리언 값이며, 따옴표가 있으면 문자열입니다."
+4,1,1. 변수와 데이터 타입,다음 코드 실행 결과 x의 타입은? x=3.14  type(x),A) int\nB) float\nC) str\nD) bool,B,3.14는 실수이므로 타입은 float입니다.
+5,1,1. 변수와 데이터 타입,다음 중 문자열(string)인 것은?,A) '123'\nB) 123\nC) 12.3\nD) True,A,따옴표로 둘러싸인 '123'은 문자열입니다.
+6,1,1. 변수와 데이터 타입,변수 x=10일 때 type(x)의 출력은?,A) int\nB) float\nC) str\nD) bool,A,10은 정수이므로 타입은 int입니다.
+7,1,1. 변수와 데이터 타입,파이썬에서 여러 줄 문자열을 작성할 때 사용하는 기호는?,"A) ''' 또는 \\""\""\nB) //\nC) /* */\nD) --""",A,"''' 또는 \\""\""를 사용해서 여러 줄 문자열을 작성합니다."""
+8,1,1. 변수와 데이터 타입,파이썬에서 변수 이름으로 권장되지 않는 것은?,A) total_sum\nB) tempVar\nC) Print\nD) numberOfItems,C,Print는 내장 함수 이름이므로 변수명으로 사용하면 혼동될 수 있습니다.
+9,2,1. 변수와 데이터 타입,다음 중 불변(immutable)한 데이터 타입은?,A) list\nB) set\nC) str\nD) dict,C,str(문자열)은 값을 변경할 수 없는 자료형입니다.
+10,2,1. 변수와 데이터 타입,파이썬에서 자료형을 확인하는 함수는?,A) typeof()\nB) type()\nC) dataType()\nD) checkType(),B,type() 함수를 사용해 변수의 자료형을 확인합니다.
+11,2,1. 변수와 데이터 타입,변수명으로 올바른 것은?,A) first-name\nB) first name\nC) firstName\nD) 2first,C,firstName은 공백이나 특수문자가 없어 올바른 변수명입니다.
+12,2,1. 변수와 데이터 타입,다음 중 mutable(가변) 자료형은?,A) tuple\nB) str\nC) list\nD) int,C,list는 값을 변경할 수 있어 가변 자료형입니다.
+13,2,1. 변수와 데이터 타입,파이썬에서 불리언 연산 결과와 같은 값은?  bool(0),A) True\nB) False\nC) 1\nD) 2,B,0은 False로 평가됩니다.
+14,2,1. 변수와 데이터 타입,"x=""10"" 일 때 int(x)의 값은?",A) 10\nB) '10'\nC) 에러\nD) 0,A,문자열 '10'을 int로 변환하면 10(정수)가 됩니다.
+15,2,1. 변수와 데이터 타입,다음 중 float 형의 값이 아닌 것은?,A) 3.5\nB) 0.0\nC) -2.7\nD) '3.5',D,'3.5'는 문자열이므로 float이 아닙니다.
+16,2,1. 변수와 데이터 타입,문자열 연결 연산자인 것은?,A) +\nB) *\nC) &\nD) ||,A,+ 연산자를 사용해 두 문자열을 연결합니다.
+17,3,1. 변수와 데이터 타입,다음 중 reserved word(예약어)는?,A) class\nB) Class\nC) myClass\nD) className,A,"class는 파이썬 예약어로, 변수명으로 사용할 수 없습니다."
+18,3,1. 변수와 데이터 타입,문자열의 길이를 구하는 함수는?,A) count()\nB) size()\nC) len()\nD) length(),C,len() 함수를 사용해 문자열의 길이를 셀 수 있습니다.
+19,3,1. 변수와 데이터 타입,파이썬에서 소수점 이하 자리수 없이 정수를 표현하는 리터럴은?,A) float\nB) int\nC) bool\nD) char,B,int는 정수를 나타내는 리터럴입니다.
+20,3,1. 변수와 데이터 타입,다음 코드 출력 결과는? x=None  print(type(x),"A) <class 'str'>\nB) <class 'int'>\nC) <class 'NoneType'>\nD)<class,'bool'>",C,None의 타입은 NoneType입니다.
+21,3,1. 변수와 데이터 타입,"다음 코드 출력은? a=""3""  b=4  print(a*b)",A) 12\nB) 3333\nC) 에러\nD) 7,B,문자열 '3'이 4번 반복되어 '3333'이 출력됩니다.
+22,3,1. 변수와 데이터 타입,파이썬에서 튜플(tuple)과 리스트(list)의 가장 큰 차이점은?,"A) 튜플은 가변, 리스트는 불변\nB) 튜플은 불변, 리스트는 가변\nC) 둘 다 가변\nD) 둘 다 불변",B,"튜플은 불변, 리스트는 가변 자료형입니다."
+23,3,1. 변수와 데이터 타입,파이썬에서 함수형 프로그래밍 스타일을 지원하는 데이터 타입은?,A) dict\nB) tuple\nC) set\nD) list,B,tuple은 함수형 프로그래밍에서 많이 사용됩니다.
+24,3,1. 변수와 데이터 타입,파이썬에서 변수의 스코프(scope)에 영향을 주는 키워드는?,A) global\nB) static\nC) private\nD) extern,A,global 키워드는 변수의 범위(scope)를 지정하는 데 사용됩니다.
+25,3,1. 변수와 데이터 타입,파이썬에서 리스트 컴프리헨션(List comprehension)의 용도로 가장 적절한 것은?,A) 반복문을 간단히 표현\nB) 변수 선언\nC) 클래스 정의\nD) 함수 호출,A,반복문을 간단하게 한 줄로 나타낼 때 사용합니다.
+26,1,2. 자료구조 기초,파이썬에서 변수 이름으로 사용할 수 없는 것은?,A) my_var\nB) _value\nC) 2ndvalue\nD) studentName,C,변수명은 숫자로 시작할 수 없으므로 2ndvalue는 사용할 수 없습니다.
+27,1,2. 자료구조 기초,파이썬에서 정수형을 의미하는 데이터 타입은?,A) int\nB) float\nC) str\nD) bool,A,int는 정수형 데이터를 표현할 때 사용하는 타입입니다.
+28,1,2. 자료구조 기초,다음 중 불리언(Boolean) 값인 것은?,A) True\nB) 'False'\nC) 0\nD) '0',A,"True는 불리언 타입이고, 따옴표가 있으면 문자열입니다."
+29,1,2. 자료구조 기초,다음 코드 실행 결과 x의 타입은? x=3.14  type(x),A) int\nB) float\nC) str\nD) bool,B,x에 3.14를 대입하면 float(실수형) 타입이 됩니다.
+30,1,2. 자료구조 기초,다음 중 문자열(string)인 것은?,A) '123'\nB) 123\nC) 12.3\nD) True,A,'123'처럼 따옴표로 감싸면 문자열로 인식됩니다.
+31,1,2. 자료구조 기초,변수 x=10일 때 type(x)의 출력은?,A) int\nB) float\nC) str\nD) bool,A,x가 10이니 타입은 int(정수형)입니다.
+32,1,2. 자료구조 기초,파이썬에서 여러 줄 문자열을 작성할 때 사용하는 기호는?,"A) ''' 또는 \\""\""\nB) //\nC) /* */\nD) --""",A,"여러 줄 문자열은 ''' 또는 \\""\""로 감싸서 만듭니다."""
+33,1,2. 자료구조 기초,파이썬에서 변수 이름으로 권장되지 않는 것은?,A) total_sum\nB) tempVar\nC) Print\nD) numberOfItems,C,Print는 내장 함수이므로 변수명으로 쓰는 걸 권장하지 않습니다.
+34,2,2. 자료구조 기초,다음 중 불변(immutable)한 데이터 타입은?,A) list\nB) set\nC) str\nD) dict,C,str은 한번 만든 뒤 값이 바뀌지 않는(불변) 자료형입니다.
+35,2,2. 자료구조 기초,파이썬에서 자료형을 확인하는 함수는?,A) typeof()\nB) type()\nC) dataType()\nD) checkType(),B,type() 함수를 쓰면 변수의 자료형을 알 수 있습니다.
+36,2,2. 자료구조 기초,변수명으로 올바른 것은?,A) first-name\nB) first name\nC) firstName\nD) 2first,C,firstName은 규칙에 맞는 올바른 변수명입니다.
+37,2,2. 자료구조 기초,다음 중 mutable(가변) 자료형은?,A) tuple\nB) str\nC) list\nD) int,C,list 자료형은 변경(수정)이 가능합니다.
+38,2,2. 자료구조 기초,파이썬에서 불리언 연산 결과와 같은 값은?  bool(0),A) True\nB) False\nC) 1\nD) 2,B,숫자 0은 False로 변환됩니다.
+39,2,2. 자료구조 기초,"x=""10"" 일 때 int(x)의 값은?",A) 10\nB) '10'\nC) 에러\nD) 0,A,'10'이라는 문자열을 int로 변환하면 정수 10이 됩니다.
+40,2,2. 자료구조 기초,다음 중 float 형의 값이 아닌 것은?,A) 3.5\nB) 0.0\nC) -2.7\nD) '3.5',D,'3.5'는 따옴표로 감싸진 문자열이므로 float형이 아닙니다.
+41,2,2. 자료구조 기초,문자열 연결 연산자인 것은?,A) +\nB) *\nC) &\nD) ||,A,+ 연산자는 두 문자열을 연결할 때 사용합니다.
+42,3,2. 자료구조 기초,다음 중 reserved word(예약어)는?,A) class\nB) Class\nC) myClass\nD) className,A,class는 파이썬에서 예약어라 변수명으로 사용할 수 없습니다.
+43,3,2. 자료구조 기초,문자열의 길이를 구하는 함수는?,A) count()\nB) size()\nC) len()\nD) length(),C,len() 함수로 문자열의 길이를 구할 수 있습니다.
+44,3,2. 자료구조 기초,파이썬에서 소수점 이하 자리수 없이 정수를 표현하는 리터럴은?,A) float\nB) int\nC) bool\nD) char,B,정수 리터럴은 int로 나타냅니다.
+45,3,2. 자료구조 기초,다음 코드 출력 결과는? x=None  print(type(x),"A) <class 'str'>\nB) <class 'int'>\nC) <class 'NoneType'>\nD)<class,'bool'>",C,None을 type에 넣으면 <class 'NoneType'>이 나옵니다.
+46,3,2. 자료구조 기초,"다음 코드 출력은? a=""3""  b=4  print(a*b)",A) 12\nB) 3333\nC) 에러\nD) 7,B,'3'*4는 문자열 '3'을 4번 반복하여 '3333'이 출력됩니다.
+47,3,2. 자료구조 기초,파이썬에서 튜플(tuple)과 리스트(list)의 가장 큰 차이점은?,"A) 튜플은 가변, 리스트는 불변\nB) 튜플은 불변, 리스트는 가변\nC) 둘 다 가변\nD) 둘 다 불변",B,"튜플은 수정할 수 없고, 리스트는 수정이 가능합니다."
+48,3,2. 자료구조 기초,파이썬에서 함수형 프로그래밍 스타일을 지원하는 데이터 타입은?,A) dict\nB) tuple\nC) set\nD) list,B,tuple은 값이 변경되지 않아 함수형 프로그래밍에 적합합니다.
+49,3,2. 자료구조 기초,파이썬에서 변수의 스코프(scope)에 영향을 주는 키워드는?,A) global\nB) static\nC) private\nD) extern,A,global을 쓰면 변수의 스코프(범위)를 전역으로 지정합니다.
+50,3,2. 자료구조 기초,파이썬에서 리스트 컴프리헨션(List comprehension)의 용도로 가장 적절한 것은?,A) 반복문을 간단히 표현\nB) 변수 선언\nC) 클래스 정의\nD) 함수 호출,A,리스트 컴프리헨션은 반복문을 한 줄로 간단히 표기할 때 사용합니다.
+51,1,3. 조건문과 반복문,파이썬에서 특정 조건에 따라 코드 블록을 실행할 때 사용하는 키워드는 무엇인가요?,A) loop \nB) when \nC) if \nD) while,C,if는 파이썬에서 조건을 검사하여 코드 실행 여부를 결정하는 조건문의 시작 키워드입니다.
+52,1,3. 조건문과 반복문,다음 중 0부터 4까지의 숫자를 순서대로 출력하는 for 반복문 코드는 무엇인가요?,"A) for i in range(5): print(i) \nB) for i in range(1, 5): print(i) \nC) for i from 0 to 4: print(i) \nD) for i in list(5): print(i)",A,"range(n) 함수는 0부터 n-1까지의 정수를 생성하므로, range(5)는 0, 1, 2, 3, 4를 생성합니다."
+53,1,3. 조건문과 반복문,"다음 while 반복문은 몇 번 ""반복""을 출력하나요?\ncount = 0\nwhile count < 2:\n\tprint(""반복"")\n\tcount += 1",A) 0번 \nB) 1번 \nC) 2번 \nD) 3번,C,"count가 0일 때, 1일 때 count < 2 조건이 참이 되어 총 두 번 ""반복""을 출력합니다. count가 2가 되면 조건이 거짓이 되어 반복문이 종료됩니다."
+54,1,3. 조건문과 반복문,다음 중 조건문 뒤에 반드시 와야 하는 기호는 무엇인가요?,"A) . (마침표) \nB) ; (세미콜론) \nC) : (콜론) \nD) , (쉼표)",C,"파이썬에서는 if나 elif, else, for, while 문 뒤에 콜론(:)을 붙여 코드 블록의 시작을 알립니다."
+55,1,3. 조건문과 반복문,"다음 코드의 출력 결과는 무엇인가요?\na = 5; b = 3 \nif a > b: \n\tprint(""a가 더 크다"") \nelse: \n\tprint(""b가 더 크거나 같다"")",A) a가 더 크다 \nB) b가 더 크거나 같다 \nC) 오류 \nD) 아무것도 출력되지 않음,A,"a는 b보다 크므로 if 조건이 참이 되어 ""a가 더 크다""가 출력됩니다."
+56,1,3. 조건문과 반복문,while 반복문은 주로 어떤 경우에 사용되나요?,A) 리스트의 모든 요소를 순회할 때 \nB) 함수를 여러 번 실행할 때 \nC) 특정 조건이 만족될 때까지 코드를 계속 실행할 때 \nD) 숫자를 한 번만 출력할 때,C,while 반복문은 주어진 조건이 참인 동안 코드 블록을 계속 반복 실행합니다.
+57,1,3. 조건문과 반복문,"다음 코드의 결과는 무엇인가요?\nis_sunny = True\nif is_sunny:\n\tprint(""산책 가자!"")",A) 산책 가자! \nB) 아무것도 출력되지 않음 \nC) 오류 발생 \nD) True,A,"is_sunny 변수가 True이므로 if 조건이 참이 되어 ""산책 가자!""가 출력됩니다."
+58,1,3. 조건문과 반복문,"다음 코드에서 print(""반갑습니다"")는 몇 번 실행되나요?\nfor _ in range(4):\n\tprint(""반갑습니다"")",A) 1번 \nB) 2번 \nC) 3번 \nD) 4번,D,"range(4)는 0, 1, 2, 3을 생성하므로 for 반복문은 총 4번 실행됩니다. 따라서 ""반갑습니다""도 4번 출력됩니다."
+59,2,3. 조건문과 반복문,"다음 코드의 출력 결과는 무엇인가요?\ntemperature = 28\nif temperature > 30:\n\tprint(""매우 더움"")\nelif temperature >= 25:\n\tprint(""더움"")\nelse:\n\tprint(""적정 온도"")",A) 매우 더움 \nB) 더움 \nC) 적정 온도 \nD) 오류 발생,B,"temperature는 30보다 크지 않으므로 첫 번째 if 조건은 거짓입니다. 하지만 25보다 크거나 같으므로 elif 조건이 참이 되어 ""더움""이 출력됩니다."
+60,2,3. 조건문과 반복문,다음 for 반복문에서 continue 키워드가 실행되었을 때 어떤 일이 발생하나요?\nfor i in range(3):\n\tif i == 1:\n\t\tcontinue\n\tprint(i),"A) 반복문이 즉시 종료된다. \nB) i가 1일 때만 코드를 실행하고 종료된다. \nC) i가 1일 때, 현재 반복을 건너뛰고 다음 반복으로 넘어간다. \nD) 오류가 발생한다.",C,"continue는 현재 반복의 남은 부분을 건너뛰고 다음 반복을 즉시 시작하게 합니다. 따라서 i가 1일 때는 print(i)가 실행되지 않고, i가 0과 2일 때만 출력됩니다."
+61,2,3. 조건문과 반복문,"다음 while 반복문은 언제 종료되나요?\nnum = 1\nwhile num < 5:\n\tprint(num)\n\tnum += 1\nprint(""종료"")","A) num이 1일 때 \nB) num이 4일 때 \nC) num이 5가 되었을 때 (num < 5 조건이 거짓이 됨) \nD) ""종료""가 출력된 후에",C,"while 반복문은 조건 num < 5가 거짓이 될 때 종료됩니다. num이 4일 때까지 print(num)이 실행되고 num이 5가 되면 조건이 거짓이 되어 반복문이 종료됩니다. ""종료""는 반복문이 종료된 후에 출력됩니다."
+62,2,3. 조건문과 반복문,"사용자로부터 숫자를 입력받아 10보다 크면 ""큼"", 10이면 ""같음"", 10보다 작으면 ""작음""을 출력하는 코드의 조건으로 적절하지 않은 것은?",A) num > 10: \nB) num == 10: \nC) num < 10: \nD) True:,D,if True: 조건은 무조건 참이 됩니다
+63,2,3. 조건문과 반복문,"다음 for 반복문에서 print(""끝"")이 출력되는 횟수는 몇 번인가요?\nfor i in range(3): \n\tfor j in range(1):\n\t\tprint(""안"") \nprint(""끝"") ",A) 1번 \nB) 2번 \nC) 3번 \nD) 4번,A,"바깥 for 문은 3번 반복하고, 안쪽 for 문은 1번 반복하여 ""안""은 총 3번 출력됩니다. 하지만 print(""끝"")은 바깥 for 문이 모두 끝난 후에 실행되므로 1번만 출력됩니다."
+64,2,3. 조건문과 반복문,"리스트 data = [10, 20, 30]의 각 요소에 10을 더한 새로운 리스트를 만들고 싶습니다. for 반복문을 사용한 올바른 코드는?",A)new_data = []\nfor x in data: \n\tnew_data.append(data + 10) \n\nB)new_data = []\nfor x in data: \n\tnew_data.append(x + 10) \n\nC)new_data = data + 10 \n\nD)for x in data: \n\tx + 10\n\tnew_data = data,B,for x in data:를 통해 data의 각 요소(x)에 접근하여 10을 더한 후 new_data 리스트에 추가해야 합니다.
+65,2,3. 조건문과 반복문,"다음 코드의 출력 결과는 무엇인가요?\nnum = 15\nif num % 3 == 0 and num % 5 == 0:\n\tprint(""FizzBuzz"")\nelif num % 3 == 0:\n\tprint(""Fizz"")\nelif num % 5 == 0:\n\tprint(""Buzz"")\nelse:\n\tprint(num)",A) Fizz \nB) Buzz \nC) FizzBuzz \nD) 15,C,"num은 3의 배수이면서 5의 배수이므로 첫 번째 if 조건이 참이 되어 ""FizzBuzz""가 출력됩니다."
+66,2,3. 조건문과 반복문,"리스트 scores = [70, 85, 90, 65]에서 80점 이상인 점수만 출력하는 for 반복문과 if 조건문의 조합으로 올바른 것은?",A) for s in scores: \n\tif s > 80: \n\t\tprint(s) \n\nB) for s in scores: \n\tif s >= 80: \n\t\tprint(s) \n\nC) if s >= 80: \n\tfor s in scores: \n\t\tprint(s) \n\nD) for s in scores :\n\tif s >= 80: \n\t\tprint(s),B,"80점 '이상'이므로 s >= 80 조건이 필요하며, 반복문 안에서 각 s에 대해 조건을 검사해야 합니다."
+67,3,3. 조건문과 반복문,"다음 리스트 내포(List Comprehension) 코드의 결과는 무엇인가요?\nnumbers = [1, 2, 3, 4, 5]\neven_squares = [x**2 for x in numbers if x % 2 == 0]\nprint(even_squares)","A) [1, 9, 25] \nB) [2, 4] \nC) [4, 16] \nD) [1, 4, 9, 16, 25]",C,"numbers 리스트에서 짝수(x % 2 == 0)인 요소(2, 4)만 선택하여 각각 제곱(x**2)하므로 [4, 16]이 됩니다."
+68,3,3. 조건문과 반복문,"다음 enumerate 함수를 활용한 코드의 출력 결과는 무엇인가요?\nnames = [""짱구"", ""맹구"", ""흰둥이""]\nfor idx, name in enumerate(names, start=1):\n\tprint(f""{idx}번: {name}"")","A) 0번: 짱구, 1번: 맹구, 2번: 흰둥이 \nB) 1번: 짱구, 2번: 맹구, 3번: 흰둥이 \nC) 짱구, 맹구, 흰둥이 \nD) 오류 발생",B,"enumerate()는 컬렉션의 인덱스와 요소를 함께 반환하며, start=1 옵션을 사용하면 인덱스를 1부터 시작합니다."
+69,3,3. 조건문과 반복문,"다음 코드는 몇 개의 ""성공!""을 출력하나요?\ndata = [(1, 2), (3, 4), (5, 6)]\ntarget_sum = 7\nfor a, b in data:\n\tif a + b == target_sum:\n\t\tprint(""성공!"")\n\t\tbreak",A) 0개 \nB) 1개 \nC) 2개 \nD) 3개,B,"(1, 2)는 합이 3이므로 if 조건이 거짓입니다. (3, 4)는 합이 7이므로 if 조건이 참이 되어 ""성공!""을 출력하고 break 문에 의해 반복문이 즉시 종료됩니다. 따라서 한 번만 출력됩니다."
+70,3,3. 조건문과 반복문,"다음 코드의 출력 결과는 무엇인가요?\nlist1 = ['A', 'B', 'C'] \nlist2 = [1, 2] \nresult = [] \nfor item1, item2 in zip(list1, list2):\n\tresult.append(f""{item1}-{item2}"") \nprint(result)","A) ['A-1', 'B-2', 'C-?'] \nB) ['A-1', 'B-2'] \nC) ['A-1', 'B-2', 'C'] \nD) 오류 발생",B,"zip() 함수는 전달된 이터러블 중 가장 짧은 것의 길이에 맞춰 요소를 묶습니다. list2의 길이가 2이므로, 두 개의 짝만 생성됩니다."
+71,3,3. 조건문과 반복문,"다음 리스트 내포(List Comprehension) 코드의 결과는 무엇인가요?\nwords = [""apple"", ""banana"", ""cherry"", ""date""] \nlong_words = [word.upper() for word in words if len(word) > 5] \nprint(long_words)","A) ['APPLE', 'CHERRY'] \nB) ['BANANA', 'CHERRY'] \nC) ['APPLE', 'BANANA', 'CHERRY', 'DATE'] \nD) ['BANANA', 'CHERRY', 'DATE']",B," words 리스트에서 길이가 5보다 큰 단어(if len(word) > 5)만 선택하고, 선택된 단어를 대문자로 변환(word.upper())합니다. ""banana"" (6글자), ""cherry"" (6글자)가 조건에 해당합니다."
+72,3,3. 조건문과 반복문,사용자로부터 0이 아닌 숫자를 입력받을 때까지 계속해서 입력을 요청하는 코드로 가장 적절한 것은?,"A)num = 0 \nif num == 0: \n\tnum = int(input(""숫자 입력: "")) \n\nB)num = 0 \nwhile num == 0: \n\tnum = int(input(""숫자 입력: "")) \n\nC)num = int(input(""숫자 입력: "")) \nif num != 0: \n\tprint(""0이 아닌 숫자입니다."") \n\nD)num = int(input(""숫자 입력: "")) \nfor _ in range(100): \n\tif num == 0: \n\t\tnum = int(input(""숫자 입력: "")) \n\telse: \n\t\tbreak",B,while num == 0:은 num이 0인 동안 계속 반복하여 입력을 받습니다. 0이 아닌 숫자가 입력되면 num == 0 조건이 거짓이 되어 반복문이 종료됩니다.
+73,3,3. 조건문과 반복문,"다음 코드의 출력 결과는 무엇인가요?\ndata = [1, 2, 3, 4]\noutput = []\nfor i in range(len(data)):\n\tif i % 2 == 0:\n\t\toutput.append(data[i] * 2)\nprint(output)","A) [2, 4, 6, 8] \nB) [1, 3] \nC) [2, 6] \nD) [4, 8]",C,"range(len(data))는 0, 1, 2, 3을 생성합니다. i가 짝수(0, 2)일 때만 data[i]에 2를 곱하여 output 리스트에 추가합니다."
+74,3,3. 조건문과 반복문,다음 while 반복문은 몇 개의 숫자를 출력하나요?\ni = 10\nwhile i > 0:\n\tif i % 3 == 0:\n\t\tprint(i)\n\ti -= 1,A) 2개 \nB) 3개 \nC) 4개 \nD) 5개,B,i는 10부터 1까지 감소합니다. i가 3의 배수인 경우만 출력합니다.
+75,3,3. 조건문과 반복문,"다음 코드의 출력 결과는 무엇인가요?\nitems = [""apple"", ""banana"", ""kiwi""] \nprices = [1000, 1500, 800] \nfor item, price in zip(items, prices): \n\tif item == ""banana"": \n\t\tprint(f""{item}의 가격은 {price}원입니다."") \n\t\tbreak",A) apple의 가격은 1000원입니다. \nB) banana의 가격은 1500원입니다. \nC) kiwi의 가격은 800원입니다. \nD) 아무것도 출력되지 않음,B,"zip()으로 (""apple"", 1000), (""banana"", 1500), (""kiwi"", 800) 순서로 묶입니다. 첫 번째 반복에서 item이 ""banana""가 아니므로 건너뛰고, 두 번째 반복에서 item이 ""banana""이므로 ""banana의 가격은 1500원입니다.""를 출력한 후 break에 의해 반복문이 종료됩니다."
+76,1,4. 함수와 예외처리,Python에서 함수를 정의할 때 사용하는 키워드는?,A) func \nB) def \nC) void \nD) function,B,함수를 정의할 때 사용하는 키워드는 'def' 답은 B
+77,1,4. 함수와 예외처리,"다음 함수의 출력 결과로 옳은 것은? \ndef greeting() :\nprint('hello') \nprint('hi') greeting()""",A) hi hello \nB) hello hi \nC) hello hi hello \nD) hi,A,함수를 정의하고 print문을 출력한 뒤 함수를 불러왔으므로 답은 A
+78,1,4. 함수와 예외처리,매개변수가 없는 함수를 호출하는 방법으로 올바른 것은?,A) func() : \nB) def func() : \nC) def func(void): \nD) func def():,B,함수를 호출하는 방법은 함수명() 이므로 답은 A
+79,1,4. 함수와 예외처리,함수에서 기본값 인자를 지정할 때 올바른 것은?,"A) def func(a=1, b) \nB) def func(a=1, b=2) \nC) def func(a, b=3,c=) \nD) def func(a=, b=2)",B,기본값을 지정할 때는 제일 끝부분 부터 지정해야하므로 답은 B
+80,1,4. 함수와 예외처리,클래스로 인스턴스를 만들때 자동으로 호출되는 메서드는?,A) self \nB) start \nC) init \nD) call,C,자동으로 호출되는 메서드는 init 답은 C
+81,1,4. 함수와 예외처리,parents 클래스를 상속받아 kid 클래스를 만드는 방법은?,A) class kid(parents): \nB) class parents=kid: \nC) class kid [parents] \nD) class kid:(parents),A,상속받는 규칙은 class 자식클래스명(부모클래스명): 이므로 답은 A
+82,1,4. 함수와 예외처리,함수에서 예외를 상위로 전달하려면?,A) return \nB) raise \nC) pass \nD) break,B,예외를 상위로 전달하는 키워드는 raise 답은 B
+83,2,4. 함수와 예외처리,함수에서 인덱스가 잘못되면 발생하는 예외는?,A) IndexError \nB) TypeError \nC) ValueError \nD) ZeroDivisionError,A,인덱스가 잘못되면 발생하는 예외는 IndexError 답은 A
+84,2,4. 함수와 예외처리,올바른 예외처리 순서는?,A) try → except → else → finally \nB) try → else → except → finally \nC) except → try → finally → else \nD) try → finally → else → except,A,try > except > else > finally 순이므로 답은 A
+85,2,4. 함수와 예외처리,함수에서 값을 반환할 때 사용하는 키워드는?,A) return  \nB) pass \nC) break \nD) continue,A,값을 반환할 때 사용하는 키워드는 return 답은 D
+86,2,4. 함수와 예외처리,함수 안에서 전역 변수를 수정하려면 사용하는 키워드는?,A) local \nB) global \nC) area \nD) override,B,함수 안에서 전역 변수를 사용할 때 쓰는 키워드는 global 답은 B
+87,2,4. 함수와 예외처리,다음 함수를 출력하는 방법으로 옳은 것은? \nclass greeting() : \ndef hello() : \nprint('hi'),A) greeting(hello()) \nB) hello() \nC) greeting()hello() \nD) greeting.hello(),D,함수 안에서 전역 변수를 사용할 때 쓰는 키워드는 global 답은 B
+88,2,4. 함수와 예외처리,함수에 전달하는 입력값을 무엇이라고 부르는가?,A) 지역변수 \nB) 인수 \nC) 매개변수 \nD) 전역변수,B,함수에 전달하는 입력값은 인수 답은 B
+89,2,4. 함수와 예외처리,"다음 함수의 출력값으로 올바른 것은? \ndef greet(name=""Kim"") \nprint(""Hello"", name) \ngreet()","A) Kim name \nB) Hello, name \nC) Hello Kim \nD) Hello,Kim",C,인수가 없으므로 기본값이 출력되서 Hello kim 답은 C
+90,2,4. 함수와 예외처리,"다음 함수를 올바르게 호출하는 것은? \ndef mul(a,b): \nreturn a*b","A) mul(3,4) \nB) mul(a,b = 3,4) \nC) mul=3,4 \nD) mul:(a=3,b=4)",A,2개의 인자를 받으므로 답은 A
+91,2,4. 함수와 예외처리,함수에서 자동으로 전역변수를 지역변수로 불러오는 데이터 타입은?,A) str \nB) int \nC) dict \nD) list,C,자동으로 전역변수를 지역변수로 불러오는 데이터 타입은 dict 답은 C
+92,3,4. 함수와 예외처리,예외처리에서 finally는 언제 실행되는가?,A) except가 실행된 때 \nB) 오류가 없을 때 \nC) 항상 \nD) 오류가 있을 때,C,finally는 항상 실행된다 답은 C
+93,3,4. 함수와 예외처리,예외처리에서 except 블록이 실행되지 않는 경우는?,A) 예외 있을 때 \nB) 예외가 없을 때 \nC) finally가 있을 때 \nD) raise가 있을 때,B,except는 예외가 발생할 때만 실행된다 답은 B
+94,3,4. 함수와 예외처리,함수에 아무 내용이 없으면 오류가 난다. 이때 쓸 수 있는 키워드는?,A) return \nB) break \nC) exit \nD) end,A,return 을 사용하면 비어있는 함수도 정의할 수 있다 답은 A
+95,3,4. 함수와 예외처리,파이썬에서 예외 처리를 시작하는 키워드는?,A) try \nB) error \nC) except \nD) else,A,예외 처리를 시작하는 키워드는 try 답은 A
+96,3,4. 함수와 예외처리,예외를 강제로 발생시키는 키워드는?,A) else \nB) error \nC) raise \nD) except,C,예외를 강제로 발생시키는 키워드 raise 답은 C
+97,3,4. 함수와 예외처리,else 블록이 실행되기 위한 조건은?,A) 예외가 발생했을 때 \nB) 예외가 발생하지 않았을 때  \nC) finally가 실행되지 않을 때 \nD) raise가 실행될 때,B,else는 예외가 발생하지 않았을 때 작동한다 답은 B
+98,3,4. 함수와 예외처리,예외 클래스 중 0으로 나눌 때 발생하는 오류는?,A) ValueError \nB) IndexError \nC) ZeroDivisionError \nD) TypeError,C,0으로 나눌 때 발생하는 오류는 ZeroDivisionError 답은 C
+99,3,4. 함수와 예외처리,"int(""abc"") 실행 시 발생하는 예외는?",A) TypeError \nB) ValueError \nC) KeyError D) NameError,B,str문을 int로 바꿀 때 생기는 오류는 ValueError 답은 B
+100,3,4. 함수와 예외처리,"다음 함수의 실행값으로 올바른 것은? \ndef add(a,b=4): \nreturn a+b \nadd(3,5)",A) 7 \nB) 8 \nC) 12 \nD) 15,A,b의 기본값은 4지만 5라는 인수를 받았으므로 답은 B

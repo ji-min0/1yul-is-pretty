@@ -1,136 +1,200 @@
-# To do as a file loader: 
-# 1. 파일 4개로 나눠서 가지고 오기 
-# 2. 4지선다 콤마로 구분자 만들어서 보여주기(데이터 정리)
+import pandas as pd, pymysql
+import mysql.connector
+from mysql.connector import errorcode
 
-# pandas는 파이썬에서 가장 많이 쓰는 데이터 처리용 라이브러리(데이터 읽기, 정리, 분석 가능)
-import pandas as pd, re
 class GameDataLoading:
+    '''
+    문제를 저장하거나 불러오는 class입니다.
 
-# 선택적으로 파일 경로 리스트를 받아옴 
-# 4개 파일 경로를 사용함 
-    def __init__(self, file_paths=None): 
-        # 받은 파일 경로가 없으면 기본 네 개의 경로 사용
-        self.file_paths = file_paths if file_paths else ['gamecode/feature/questionfile1.csv', 'gamecode/feature/questionfile2.csv', 'gamecode/feature/questionfile3.csv', 'gamecode/feature/questionfile4.csv']
-        # 파일을 받아둘 빈 딕셔너리 
-        self.data_files = {}
-        # 인스턴스가 생성될 때 실행해서 모든 파일을 미리 읽어두는 기능
-        self.load_files()
-
-    #file_paths 리스트에 있는 모든 파일을 차례로 읽음 
-    def load_files(self):
-        for file in self.file_paths:
-            try:
-                # Pandas 데이터프레임 사용 
-                data = pd.read_csv(file)
-                # 공백이 있을 때를 대비해서 공백 삭제 
-                # 칼럼명 오류에 대비
-                data.columns = data.columns.str.strip()
-                if 'levels' in data.columns:
-                    data = data.rename(columns={'levels': 'level'})
-                
-                # 읽어들인 데이터를 파일명(key)과 쌍으로 data.failes 딕셔너리에 저장
-                self.data_files[file] = data
-            except FileNotFoundError:
-                print(f"파일을 찾을 수 없습니다: {file}")
-            except Exception as e:
-                print(f"파일 로드 중 오류 발생: {file} - {str(e)}")
-                
-    def get_data(self, file_name):
-        # 데이터 딕셔너리에 없으면 새로 읽기 시도 
-        if file_name not in self.data_files:
-            try:
-                data = pd.read_csv(file_name, encoding='CP949') # DecodeError로 인한 설정 추가
-                
-                # 위와 동일한 방식으로 파일에 있을 빈칸이나 칼럼명 오류 해결
-                data.columns = data.columns.str.strip()
-                if 'levels' in data.columns:
-                    data = data.rename(columns={'levels': 'level'})
-                
-                #file_name에 데이터 파일 저장
-                self.data_files[file_name] = data
-            except FileNotFoundError:
-                print(f"파일을 찾을 수 없습니다: {file_name}")
-                return None
-            except Exception as e:
-                print(f"파일 로드 중 오류 발생: {file_name} - {str(e)}")
-                return None
-        
-        return self.data_files.get(file_name, None)
-
-    def get_all_data(self):
-        #데이터를 담을 리스트
-        all_data = []
-
-        for file in self.file_paths:
-            #각 파일을 get_all_data 메서드를 사용해서 읽어옴 
-
-            data = self.get_data(file)
-            if data is not None:
-            
-                #파일 이름과, 파일에서 읽은 데이터를 딕셔너리 형태로 묶음
-                file_dict = {
-                    'file_name': file,
-                    'data': data
-                }
-
-                #모든 파일에 대한 반복 후 모든 파일 정보가 담긴 리스트를 반환
-                all_data.append(file_dict)
-        
-        return all_data
-    
-    def get_all_questions(self, unit_select:str="0"):
-        # 모든 문제를 담을 빈 리스트
-        all_questions = []
-
-        # 특정 단원을 선택했으면
-        if unit_select != "0":        
-
-            # 첫 번째 파일 경로에서 숫자를 선택한 단원 번호로 바꿈 
-            # re.sub은 파이썬의 re 모듈에 있는 sub() 함수를 사용한 문자열 치환 작업 
-            # re.sub(pattern, repl, string) string에서 pattern에 해당하는 부분을 모두 replace
-            # 파일 이름 내에서 숫자를 찾아서 주어진 단원 번호 문자열로 모두 대체하는 함수 
-            file = re.sub('[0-9]', unit_select, self.file_paths[0])
-            # 바뀐 파일 경로의 데이터 읽어오기 
-            data = self.get_data(file)
-
-            #데이터가 읽혔으면 다음을 진행. 
-            if data is not None:
-
-                #데이터를 각 행별 딕셔너리 리스트로 변환 
-                questions = data.to_dict('records')
-                
-                # 각 문제 딕셔너리에 파일 이름을 추가해 파일 출처를 표시
-                for question in questions:
-                    question['file_name'] = file
-                # 문제 리스트를 최종 리스트에 추가함
-                all_questions.extend(questions)
-            
-            return all_questions 
-        else: 
-            # 단원별을 선택하지 않았으면 모든 파일 경로를 반복 
-            for file in self.file_paths:
-                data = self.get_data(file)
-                if data is not None:
-                    questions = data.to_dict('records')
-                    for question in questions:
-                        question['file_name'] = file
-                    all_questions.extend(questions)
-            
-            return all_questions 
-
-    def get_all_processed(self):
-        #모든 파일을 데이터 리스트 형태로 가져옴. 
-        all_data = self.get_all_data()
-        #단원 선택 하지 않아도 전체 문제를 리스트 형태로 가져옴 
-        all_questions = self.get_all_questions()
-        
-        #불러온 전체 데이터와 문제 리스트를 딕셔너리로 반환.
-        return {
-            'all_data': all_data,
-            'all_questions': all_questions
+    get_questions list를 가져갈 떄 현재는 데이터양이 적어 ORDER BY RAND() 하였습니다.
+    추후 페이징 또는 데이터양이 많아진다면 랜덤순서를 별도로 저정할 필요가 있습니다. 
+    '''
+    def __init__(self, user_type:str = "0", file_path = None):
+        self.user_type = user_type
+        # CSV 파일의 열 이름과 데이터베이스 테이블의 열 이름을 일치시킵니다.
+        self.columns = ["quiz_id","level","chapter","questions","choices","answers","explanations"]
+        # --- CSV 파일 정보 ---
+        self.file_path = './gamecode/feature/quiz_list_merge.csv' if file_path == None else file_path
+        # 데이터베이스 연결 설정 (변경필요)
+        self.conn = {
+            "host" : 'localhost',  # 데이터베이스 서버 주소
+            "user" : 'root',       # 데이터베이스 사용자 이름
+            "port" : 3306,
+            "password" : 'qwer1234',  # 데이터베이스 비밀번호
+            "db" : 'quizlist_db',       # 데이터베이스 이름
+            "charset" : 'utf8mb4'
         }
 
+    def connect_to_database(self):
+        return pymysql.connect(
+            host=self.conn["host"],
+            port=self.conn["port"],
+            user=self.conn["user"],
+            password=self.conn["password"],
+            db=self.conn["db"],
+            charset=self.conn["charset"],
+            cursorclass=pymysql.cursors.DictCursor
+        )
 
-# loader = GameDataLoading()
-# loader.load_files()
-# result = loader.get_all_processed()
+    def load_data_from_csv(self):
+        """
+        CSV 파일에서 데이터를 읽어와 pandas DataFrame으로 반환합니다.
+        """
+        try:
+            # CSV 파일을 읽습니다. 한글 인코딩 문제 방지를 위해 'utf-8'을 사용합니다.
+            df = pd.read_csv(self.file_path, encoding='utf-8')
+            print(f"'{self.file_path}' 파일에서 {len(df)}개의 데이터를 성공적으로 읽었습니다.")
+            return df
+        except FileNotFoundError:
+            print(f"오류: 파일 '{self.file_path}'을(를) 찾을 수 없습니다.")
+            return None
+        except Exception as e:
+            print(f"CSV 파일 로드 중 오류가 발생했습니다: {e}")
+            return None
+
+    def insert_data_to_mysql(self, df):
+        """
+        DataFrame의 데이터를 MySQL 테이블에 삽입합니다.
+        """
+        if df is None or df.empty:
+            print("삽입할 데이터가 없습니다.")
+            return
+
+        cursor = self.conn.cursor()
+        # INSERT 쿼리문 생성
+        # 예: INSERT INTO quiz_questions (level, chapter, questions, ...) VALUES (%s, %s, %s, ...)
+        insert_columns = self.columns[1:]
+        columns_str = ", ".join(insert_columns)
+        values_str = ", ".join([f"%({col})s" for col in insert_columns])
+        insert_query = f"INSERT INTO QUIZ_QUESTIONS ({columns_str}) VALUES ({values_str})"
+        
+        # DataFrame의 각 행을 딕셔너리 형태로 변환하여 리스트에 저장
+        # to_dict('records')를 사용하면 각 행을 딕셔너리로 변환하여 리스트로 반환합니다.
+        data_dicts = df[insert_columns].to_dict('records')
+
+        try:
+            # executemany를 사용하여 여러 행을 한 번에 삽입합니다.
+            cursor.executemany(insert_query, data_dicts)
+            self.conn.commit()
+            print(f"총 {cursor.rowcount}개의 레코드를 'QUIZ_QUESTIONS' 테이블에 성공적으로 삽입했습니다.")
+        except mysql.connector.Error as err:
+            print(f"MySQL 삽입 중 오류가 발생했습니다: {err.msg}")
+            self.conn.rollback() # 오류 발생 시 롤백
+        finally:
+            cursor.close()
+
+    def set_data_csv_to_mysql(self, file_path:str = None):
+        """
+        QUIZ_QUESTIONS TABLE에 CSV 파일 정보를 INSERT 할 수 있습니다.
+        file 위치 정보와 아래의 열을 가지고있어야합니다.
+        "quiz_id","level","chapter","questions","choices","answers","explanations"
+        """
+        self.file_path = self.file_path if file_path == None else file_path
+
+        df = self.load_data_from_csv()
+        self.insert_data_to_mysql(df)
+
+    def get_all_questions(self) -> list[dict]:
+        """
+        모든 문제를 출제합니다.
+        """
+        conn = None
+        quiz_list = []
+        try:
+            conn = self.connect_to_database()
+            with conn.cursor() as cursor:
+                main_sql = "SELECT * FROM QUIZ_QUESTIONS ORDER BY RAND()"
+                sql = f"SELECT CAST(@ROWNUM:=@ROWNUM+1 AS UNSIGNED) AS numbers, Q.* FROM ({main_sql}) Q, (SELECT @ROWNUM := 0) R"
+                cursor.execute(sql)
+                for row in cursor.fetchall():
+                    quiz_list.append(row)
+        except Exception as e:
+            print(f"데이터베이스 연결/쿼리 오류: {e}")
+        finally:
+            # 열려있을때만 닫기
+            if conn.open:
+                conn.close()
+        return quiz_list
+        
+    def get_chapter_questions(self) -> list[dict]:
+        """
+        요청된 단원의 문제를 출제합니다.
+        """
+        conn = None
+        quiz_list = []
+        select_chapter = self.user_type
+        try:
+            conn = self.connect_to_database()
+            with conn.cursor() as cursor:
+                main_sql = "SELECT * FROM QUIZ_QUESTIONS WHERE CHAPTER LIKE %s ORDER BY RAND()"
+                sql = f"SELECT CAST(@ROWNUM:=@ROWNUM+1 AS UNSIGNED) AS numbers, Q.* FROM ({main_sql}) Q, (SELECT @ROWNUM := 0) R"
+                cursor.execute(sql, f"{select_chapter}.%")
+                for row in cursor.fetchall():
+                    quiz_list.append(row)
+        except Exception as e:
+            print(f"데이터베이스 연결/쿼리 오류: {e}")
+        finally:
+            # 열려있을때만 닫기
+            if conn.open:
+                conn.close()
+        return quiz_list
+    
+    def get_level_questions(self) -> list[dict]:
+        """
+        요청된 단원의 문제를 출제합니다.
+        """
+        conn = None
+        quiz_list = []
+        select_level = self.user_type
+        try:
+            conn = self.connect_to_database()
+            with conn.cursor() as cursor:
+                main_sql = "SELECT * FROM QUIZ_QUESTIONS WHERE LEVEL = %s ORDER BY RAND()"
+                sql = f"SELECT CAST(@ROWNUM:=@ROWNUM+1 AS UNSIGNED) AS numbers, Q.* FROM ({main_sql}) Q, (SELECT @ROWNUM := 0) R"
+                cursor.execute(sql, select_level)
+                for row in cursor.fetchall():
+                    quiz_list.append(row)
+        except Exception as e:
+            print(f"데이터베이스 연결/쿼리 오류: {e}")
+        finally:
+            # 열려있을때만 닫기
+            if conn and conn.open: 
+                conn.close()
+        return quiz_list
+        
+    def get_setting_questions(self) -> dict[str, tuple]:
+        """
+        level과 chapter의 범위를 가져옵니다.
+        """
+        conn = None
+        setting_dict = {}
+        columns = ("level", "chapter")
+        try:
+            conn = self.connect_to_database()
+            for column in columns:
+                with conn.cursor() as cursor:
+                    sql = f"SELECT DISTINCT {column} FROM QUIZ_QUESTIONS"
+                    
+                    cursor.execute(sql)
+                    rows = cursor.fetchall()
+                    # 리스트컴프리헨션 > tuple 변환합니다.
+                    values = tuple([row[column] for row in rows])
+                    
+                    # 최종 딕셔너리에 키-값 쌍을 저장합니다.
+                    setting_dict[column] = values
+        except Exception as e:
+            print(f"데이터베이스 연결/쿼리 오류: {e}")
+        finally:
+            # 열려있을때만 닫기
+            if conn.open:
+                conn.close()
+        return setting_dict
+
+if __name__ == "__main__":
+    loader = GameDataLoading(1)
+#     # # csv to sql
+#     # loader.set_data_csv_to_mysql()
+
+#     # # select test
+    re = loader.get_all_questions()
+    print(re)
