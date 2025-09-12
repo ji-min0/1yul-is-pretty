@@ -1,6 +1,5 @@
 import pandas as pd, pymysql
-import mysql.connector
-from mysql.connector import errorcode
+from dbconfig import dbconfig
 
 class GameDataLoading:
     '''
@@ -15,24 +14,14 @@ class GameDataLoading:
         self.columns = ["quiz_id","level","chapter","questions","choices","answers","explanations"]
         # --- CSV 파일 정보 ---
         self.file_path = './gamecode/feature/quiz_list_merge.csv' if file_path == None else file_path
-        # 데이터베이스 연결 설정 (변경필요)
-        self.conn = {
-            "host" : 'localhost',  # 데이터베이스 서버 주소
-            "user" : 'root',       # 데이터베이스 사용자 이름
-            "port" : 3306,
-            "password" : 'qwer1234',  # 데이터베이스 비밀번호
-            "db" : 'quizlist_db',       # 데이터베이스 이름
-            "charset" : 'utf8mb4'
-        }
-
+    
     def connect_to_database(self):
         return pymysql.connect(
-            host=self.conn["host"],
-            port=self.conn["port"],
-            user=self.conn["user"],
-            password=self.conn["password"],
-            db=self.conn["db"],
-            charset=self.conn["charset"],
+            host=dbconfig['host'],
+            user=dbconfig['user'],
+            password=dbconfig['password'],
+            db=dbconfig['database'],
+            charset=dbconfig['charset'],
             cursorclass=pymysql.cursors.DictCursor
         )
 
@@ -59,8 +48,8 @@ class GameDataLoading:
         if df is None or df.empty:
             print("삽입할 데이터가 없습니다.")
             return
-
-        cursor = self.conn.cursor()
+        conn = self.connect_to_database()
+        cursor = conn.cursor()
         # INSERT 쿼리문 생성
         # 예: INSERT INTO quiz_questions (level, chapter, questions, ...) VALUES (%s, %s, %s, ...)
         insert_columns = self.columns[1:]
@@ -75,11 +64,11 @@ class GameDataLoading:
         try:
             # executemany를 사용하여 여러 행을 한 번에 삽입합니다.
             cursor.executemany(insert_query, data_dicts)
-            self.conn.commit()
+            conn.commit()
             print(f"총 {cursor.rowcount}개의 레코드를 'QUIZ_QUESTIONS' 테이블에 성공적으로 삽입했습니다.")
         except mysql.connector.Error as err:
             print(f"MySQL 삽입 중 오류가 발생했습니다: {err.msg}")
-            self.conn.rollback() # 오류 발생 시 롤백
+            conn.rollback() # 오류 발생 시 롤백
         finally:
             cursor.close()
 
@@ -192,9 +181,9 @@ class GameDataLoading:
 
 if __name__ == "__main__":
     loader = GameDataLoading(1)
-#     # # csv to sql
-#     # loader.set_data_csv_to_mysql()
+    # # csv to sql
+    loader.set_data_csv_to_mysql()
 
 #     # # select test
-    re = loader.get_all_questions()
-    print(re)
+    # re = loader.get_all_questions()
+    # print(re)
